@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang=en>
+<title>SliP Tech BLOG</title>
+
+<style>
+* {
+;	margin					: 0
+;	font-family				: monospace
+;	transition				: all 0.3s
+}
+
+html {
+;	height					: 100%
+}
+body {
+;	height					: 100%
+;	margin					: 0
+;	display					: grid
+;	grid-template-rows		: auto 1fr auto
+;	grid-template-columns	: auto 1fr auto
+}
+header, footer {
+;	grid-column				: 1 / 4
+;	padding					: 2px 5px
+}
+
+header	{	padding			: 8px }
+footer	{	padding			: 8px }
+
+header	{	border-bottom	: 1px solid black }
+footer	{	border-top		: 1px solid black }
+nav		{	border-right	: 1px solid black }
+aside	{	border-left		: 1px solid black }
+
+.article {
+;	color					: blue
+;	text-decoration			: underline
+;	cursor					: pointer
+}
+
+</style>
+
+<header>
+	<h1>SliP TechBLOG</h1>
+</header>
+
+<nav style="padding: 8px">
+	<ul id=ARTICLES style="list-style-type: square; padding-left: 12px"></ul>
+</nav>
+
+<iframe id=CONTENT src=Welcome.html style="border: none; width: 100%; height: 100%"></iframe>
+<aside></aside>
+<footer>	(C)2022 SliP LLC, Tokyo.	</footer>
+
+<script type=module>
+const
+contents = [
+	[	'Discover the power of Tensor Cores'
+	,	'Contents/TensorCores.html'
+	,	20220616
+	,	[	'Tensor'
+		,	'Matrix'
+		,	'CUDA'
+		,	'C++'
+		]
+	]
+,	[	'Fitting a cubic Bezier curve'
+	,	'Contents/CurveFit.html'
+	,	20210105
+	,	[	'Graphics'
+		,	'Bezier'
+		,	'Curve'
+		,	'JavaScript'
+		]
+	]
+]
+contents.forEach(
+	$ => {
+		const _ = ARTICLES.appendChild( document.createElement( 'li' ) )
+		_.textContent = $[ 0 ]
+		_.classList.add( 'article' )
+		_.onclick = () => CONTENT.setAttribute( 'src', $[ 1 ] )
+	}
+)
+</script>
+
