@@ -44,6 +44,9 @@ pre {
 }
 </style>
 <h1>Fitting a cubic Bezier curve</h1>
+Written in JavaScript.<br>
+by Satoru Ogura | <a href=https://satachito.github.io/TechBLOG/>https://satachito.github.io/TechBLOG/</a> | Jan 21 2021<br>
+
 
 <h2>Abstruct</h2>
 <hr>
@@ -218,9 +221,10 @@ Partial differentiation by p and q. In addition, divide by 2.
 
 \[
 \frac{\partial Diff}{2\partial p}=B^2p + BCq + AB + BD + BE　
-\\
-\frac{\partial Diff}{2\partial q}=BCp + C^2q + AC + CD + CE
+\]
 
+\[
+\frac{\partial Diff}{2\partial q}=BCp + C^2q + AC + CD + CE
 \]
 
 Returning <code>A,B,C,D,E</code> yields the following
@@ -228,9 +232,9 @@ Returning <code>A,B,C,D,E</code> yields the following
 \[\frac{\partial Diff}{2\partial p}
 =9u^4t^2p + 9u^3t^3q + 3u^5ts + 3u^2t^4e - 3u^2tc
 \\=(3u^2t)( 3u^2tp + 3ut^2q + u^3s + t^3e - c )
-\\
-\\
-\frac{\partial Diff}{2\partial q}
+\]
+
+\[\frac{\partial Diff}{2\partial q}
 =9u^3t^3p + 9u^2t^4q + 3u^4t^2s + 3ut^5e - 3ut^2c
 \\=(3ut^2)( 3u^2tp + 3ut^2q + u^3s + t^3e - c )
 \]

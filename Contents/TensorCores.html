@@ -7,7 +7,9 @@ pre {
 </style>
 
 <h1>Discover the power of Tensor Cores</h1>
-
+Written in C++ and CUDA.<br>
+by Satoru Ogura | <a href=https://satachito.github.io/TechBLOG/>https://satachito.github.io/TechBLOG/</a> | Feb 22 2022<br>
+<br>
 <a href=https://developer.nvidia.com/tensor-cores>Tensor Cores in NVIDIA site</a><br>
 <br>
 Tensor Cores are units that can perform multiple simple calculations simultaneously, and are said to be especially capable of performing the dense matrix product required in AI. So let's check it out by measuring the time to multiply a 512 x 1024 matrix by a 1024 x 2048 matrix.<br>
@@ -87,6 +89,8 @@ MatPro(
 
 	wmma::store_matrix_sync( _c + ( blockIdx.y * N * 16 + blockIdx.x * 16 ), c, N, wmma::mem_row_major );
 }
+
+MatPro<<< dim3( N / 16, M / 16 ), 32 >>>( a, b, c );
 
 </code></pre>
 
