@@ -79,16 +79,16 @@ contents.forEach(
 		const a = ARTICLES.appendChild( document.createElement( 'a' ) )
 		a.textContent = $[ 0 ]
 		a.classList.add( 'article' )
-		const _ = location.href
+		a.style.display = 'block'
+		const _ = location
 		a.href = _.origin + _.pathname + '?_=' + $[ 1 ]
 	}
 )
-/*
+
 window.onload = _ => {
-	FOOTER.textContent = JSON.stringify( location, null, '\t' )
+	console.log( JSON.stringify( location, null, '\t' ) )
 	const _ = contents.find( $ => locaion.href.search === '?_=' + $[ 1 ] )
-	_ !== void 0 && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
+	_ !== ( void 0 ) && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
 }
-*/
 
 </script>
