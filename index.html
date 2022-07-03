@@ -82,5 +82,7 @@ contents.forEach(
 		_.onclick = () => CONTENT.setAttribute( 'src', $[ 1 ] )
 	}
 )
+window.onload = _ => footer.textContent = JSON.stringify( location, null, '\t' )
+
 </script>
 
