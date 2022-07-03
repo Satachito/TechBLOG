@@ -86,7 +86,7 @@ contents.forEach(
 
 window.onload = () => {
 	console.log( JSON.stringify( location, null, '\t' ) )
-	const _ = contents.find( $ => locaion.href.search === '?_=' + $[ 1 ] )
+	const _ = contents.find( $ => location.href.search === '?_=' + $[ 1 ] )
 	_ && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
 }
 
