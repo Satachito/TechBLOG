@@ -80,14 +80,14 @@ contents.forEach(
 		li.textContent = $[ 0 ]
 		li.classList.add( 'article' )
 		const _ = location
-		li.onclick = locaion.href = _.origin + _.pathname + '?_=' + $[ 1 ]
+		li.onclick = _.href = _.origin + _.pathname + '?_=' + $[ 1 ]
 	}
 )
 
-window.onload = () => {
+window.onload = _ => {
 	console.log( JSON.stringify( location, null, '\t' ) )
-	const _ = contents.find( $ => locaion.href.search === '?_=' + $[ 1 ] )
-	_ && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
+//	const _ = contents.find( $ => locaion.href.search === '?_=' + $[ 1 ] )
+//	_ && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
 }
 
 </script>
