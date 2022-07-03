@@ -48,7 +48,7 @@ aside	{	border-left		: 1px solid black }
 	<ul id=ARTICLES style="list-style-type: square; padding-left: 12px"></ul>
 </nav>
 
-<iframe id=CONTENT src=Welcome.html style="border: none; width: 100%; height: 100%"></iframe>
+<iframe id=CONTENT style="border: none; width: 100%; height: 100%"></iframe>
 <aside></aside>
 <footer id=FOOTER>	(C)2022 SliP LLC, Tokyo.	</footer>
 
@@ -86,8 +86,8 @@ contents.forEach(
 
 window.onload = () => {
 	console.log( JSON.stringify( location, null, '\t' ) )
-	const _ = contents.find( $ => ( console.log( location.search, '?_=' + $[ 1 ] ), location.search === '?_=' + $[ 1 ] ) )
-	_ && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
+	const _ = contents.find( $ => location.search === '?_=' + $[ 1 ] )
+	CONTENT.setAttribute( 'src', _ ? 'Contents/' + _[ 1 ] + '.html' : 'Welcom.html' )
 }
 
 </script>
