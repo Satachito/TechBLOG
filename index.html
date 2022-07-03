@@ -76,19 +76,18 @@ contents = [
 ]
 contents.forEach(
 	$ => {
-		const a = ARTICLES.appendChild( document.createElement( 'a' ) )
-		a.textContent = $[ 0 ]
-		a.classList.add( 'article' )
-		a.style.display = 'block'
+		const li = ARTICLES.appendChild( document.createElement( 'li' ) )
+		li.textContent = $[ 0 ]
+		li.classList.add( 'article' )
 		const _ = location
-		a.href = _.origin + _.pathname + '?_=' + $[ 1 ]
+		li.onclick = locaion.href = _.origin + _.pathname + '?_=' + $[ 1 ]
 	}
 )
 
 window.onload = _ => {
 	console.log( JSON.stringify( location, null, '\t' ) )
 	const _ = contents.find( $ => locaion.href.search === '?_=' + $[ 1 ] )
-	_ !== ( void 0 ) && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
+	_ && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
 }
 
 </script>
