@@ -56,7 +56,7 @@ aside	{	border-left		: 1px solid black }
 const
 contents = [
 	[	'Discover the power of Tensor Cores'
-	,	'Contents/TensorCores.html'
+	,	'TensorCores'
 	,	20220616
 	,	[	'Tensor'
 		,	'Matrix'
@@ -65,7 +65,7 @@ contents = [
 		]
 	]
 ,	[	'Fitting a cubic Bezier curve'
-	,	'Contents/CurveFit.html'
+	,	'CurveFit'
 	,	20210105
 	,	[	'Graphics'
 		,	'Bezier'
@@ -76,13 +76,17 @@ contents = [
 ]
 contents.forEach(
 	$ => {
-		const _ = ARTICLES.appendChild( document.createElement( 'li' ) )
-		_.textContent = $[ 0 ]
-		_.classList.add( 'article' )
-		_.onclick = () => CONTENT.setAttribute( 'src', $[ 1 ] )
+		const a = ARTICLES.appendChild( document.createElement( 'a' ) )
+		a.textContent = $[ 0 ]
+		a.classList.add( 'article' )
+		const _ = location.href
+		a.href = _.origin + _.pathname + '?_=' + $[ 1 ]
 	}
 )
-//window.onload = _ => FOOTER.textContent = JSON.stringify( location, null, '\t' )
+window.onload = _ => {
+	FOOTER.textContent = JSON.stringify( location, null, '\t' )
+	const _ = contents.find( $ => locaion.href.search === '?_=' + $[ 1 ] )
+	_ !== void 0 && CONTENT.setAttribute( 'src', 'Contents/' + _[ 1 ] + '.html' )
+}
 
 </script>
-
