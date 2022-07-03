@@ -50,7 +50,7 @@ aside	{	border-left		: 1px solid black }
 
 <iframe id=CONTENT src=Welcome.html style="border: none; width: 100%; height: 100%"></iframe>
 <aside></aside>
-<footer>	(C)2022 SliP LLC, Tokyo.	</footer>
+<footer id=FOOTER>	(C)2022 SliP LLC, Tokyo.	</footer>
 
 <script type=module>
 const
@@ -82,7 +82,7 @@ contents.forEach(
 		_.onclick = () => CONTENT.setAttribute( 'src', $[ 1 ] )
 	}
 )
-window.onload = _ => footer.textContent = JSON.stringify( location, null, '\t' )
+window.onload = _ => FOOTER.textContent = JSON.stringify( location, null, '\t' )
 
 </script>
 
