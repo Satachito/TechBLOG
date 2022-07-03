@@ -80,7 +80,7 @@ contents.forEach(
 		li.textContent = $[ 0 ]
 		li.classList.add( 'article' )
 		const _ = location
-		li.onclick = _.href = _.origin + _.pathname + '?_=' + $[ 1 ]
+		li.onclick = () => _.href = _.origin + _.pathname + '?_=' + $[ 1 ]
 	}
 )
 
