@@ -45,7 +45,18 @@ aside	{	border-left		: 1px solid black }
 </header>
 
 <nav style="padding: 8px">
+	<h1 id=WE_ARE class=article>We are...</h1>
+	<br>
+	<h1>Tech BLOG</h1>
 	<ul id=ARTICLES style="list-style-type: square; padding-left: 12px"></ul>
+	<br>
+	<h1>Services</h1>
+	<a href=https://satachito.github.io/SliP/>SliP, the resulting calculator</a><br>
+	<p>VecEdit: the SVG Editor ...comming soon</p><br>
+	<br>
+	<h1>Applications</h1>
+	<a href=https://apps.apple.com/jp/app/slip/id1097457043?mt=12>SliP, Free on AppStore</a><br>
+	<br>
 </nav>
 
 <iframe id=CONTENT style="border: none; width: 100%; height: 100%"></iframe>
@@ -53,6 +64,9 @@ aside	{	border-left		: 1px solid black }
 <footer id=FOOTER>	(C)2022 SliP LLC, Tokyo.	</footer>
 
 <script type=module>
+
+WE_ARE.onclick = () => location.href = location.origin
+
 const
 contents = [
 	[	'Discover the power of Tensor Cores'
@@ -79,8 +93,7 @@ contents.forEach(
 		const li = ARTICLES.appendChild( document.createElement( 'li' ) )
 		li.textContent = $[ 0 ]
 		li.classList.add( 'article' )
-		const _ = location
-		li.onclick = () => _.href = _.origin + _.pathname + '?_=' + $[ 1 ]
+		li.onclick = () => location.href = location.origin + location.pathname + '?_=' + $[ 1 ]
 	}
 )
 
@@ -89,5 +102,5 @@ window.onload = () => {
 	const _ = contents.find( $ => location.search === '?_=' + $[ 1 ] )
 	CONTENT.setAttribute( 'src', _ ? 'Contents/' + _[ 1 ] + '.html' : 'Welcome.html' )
 }
-
 </script>
+
