@@ -17,25 +17,27 @@ body {
 ;	margin					: 0
 ;	display					: grid
 ;	grid-template-rows		: auto 1fr auto
-;	grid-template-columns	: auto 1fr auto
+;	grid-template-columns	: 256px 1fr auto
 }
 header, footer {
 ;	grid-column				: 1 / 4
 ;	padding					: 2px 5px
 }
 
-header	{	padding			: 8px }
-footer	{	padding			: 8px }
+header	{	padding			: 12px }
+nav		{	padding			: 12px }
+footer	{	padding			: 12px }
 
 header	{	border-bottom	: 1px solid black }
 footer	{	border-top		: 1px solid black }
 nav		{	border-right	: 1px solid black }
 aside	{	border-left		: 1px solid black }
 
-.article {
+li {
 ;	color					: blue
 ;	text-decoration			: underline
 ;	cursor					: pointer
+;	margin-bottom			: 16px
 }
 
 </style>
@@ -44,17 +46,19 @@ aside	{	border-left		: 1px solid black }
 	<h1>SliP TechBLOG</h1>
 </header>
 
-<nav style="padding: 8px">
-	<br>
+<nav>
 	<h1>Tech BLOG</h1>
+	<br>
 	<ul id=ARTICLES style="list-style-type: square; padding-left: 12px"></ul>
 	<br>
 	<h1>Services</h1>
-	<a href=https://slip.828.tokyo>SliP, the monster calculator</a><br>
-	<a href=https://vecedit-b5a34.web.app/>VecEdit: the SVG Editor(DRAFT)</a><br>
+	<br>
+	<li><a href=https://slip.828.tokyo>SliP, the monster calculator</a></li>
+	<li><a href=https://vecedit-b5a34.web.app/>VecEdit: the SVG Editor(DRAFT)</a></li>
 	<br>
 	<h1>Applications</h1>
-	<a href=https://apps.apple.com/jp/app/slip/id1097457043?mt=12>SliP, Free on AppStore</a><br>
+	<br>
+	<li><a href=https://apps.apple.com/jp/app/slip/id1097457043?mt=12>SliP, Free on AppStore</a></li><br>
 	<br>
 	<div style="background:#fff;width:120px;height:215px;box-sizing:border-box;border:1px solid #ccc;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;"><div style="line-height:0;"><img src="https://static.jp.mercari.com/assets/img/common/jp/logo_horizontal.png" width="105"></div><a href="https://jp.mercari.com/item/m16982693264?afid=4374042662" style="width:100px;height:100px;background:#eee;"}" target="_self"><img src="https://ambassador-system.mercari.com/v1/i?id=m16982693264&svc=m" style="line-height:0;width:100px;height:100px;object-fit:contain;"/></a><div style="padding:12px 0;width:100%;text-align:center;"><a href="https://jp.mercari.com/item/m16982693264?afid=4374042662" style="width:100px;height:32px;background-color:#E32B36;border-radius:4px;line-height:14px;text-align:center;color:#fff;font-weight:bold;border:0;font-size:12px;display:inline-flex;justify-content:center;align-items:center;" target="_self">今すぐ購入</a></div></div>
 </nav>
@@ -67,9 +71,27 @@ aside	{	border-left		: 1px solid black }
 
 const
 contents = [
-	[	'Discover the power of Tensor Cores'
+	[	'Understanding Custom Elements and Web Components'
+	,	'CEvsWC'
+	,	'2024/03/09'
+	,	[	'CustomElements'
+		,	'JavaScript'
+		,	'HTML'
+		,	'WebComponents'
+		]
+	]
+,	[	'Unleashing the Power of CustomElements in Web Development'
+	,	'CustomElements'
+	,	'2024/01/01'
+	,	[	'CustomElements'
+		,	'JavaScript'
+		,	'HTML'
+		,	'WebComponents'
+		]
+	]
+,	[	'Discover the power of Tensor Cores'
 	,	'TensorCores'
-	,	20220616
+	,	'2022/06/16'
 	,	[	'Tensor'
 		,	'Matrix'
 		,	'CUDA'
@@ -78,7 +100,7 @@ contents = [
 	]
 ,	[	'Fitting a cubic Bezier curve'
 	,	'CurveFit'
-	,	20210105
+	,	'2021/01/05'
 	,	[	'Graphics'
 		,	'Bezier'
 		,	'Curve'
@@ -87,7 +109,7 @@ contents = [
 	]
 ,	[	'About Satoru Ogura'
 	,	'Resume'
-	,	20231122
+	,	'2023/11/22'
 	,	[	'Graphics'
 		,	'Bezier'
 		,	'Curve'
@@ -98,7 +120,7 @@ contents = [
 contents.forEach(
 	$ => {
 		const li = ARTICLES.appendChild( document.createElement( 'li' ) )
-		li.textContent = $[ 0 ]
+		li.textContent = $[ 0 ] + '(' + $[ 2 ] + ')'
 		li.classList.add( 'article' )
 		li.onclick = () => location.href = location.origin + location.pathname + '?_=' + $[ 1 ]
 	}
