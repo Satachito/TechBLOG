@@ -1,0 +1,261 @@
+<script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true,
+        tags: "ams",
+        autoload: {
+          color: [],
+          colorV2: ['color']
+        },
+        packages: {'[+]': ['noerrors']}
+      },
+      chtml: {
+        matchFontHeight: false,
+        displayAlign: "left",
+        displayIndent: "2em"
+      },
+      options: {
+        renderActions: {
+          /* add a new named action to render <script type="math/tex"> */
+          find_script_mathtex: [10, function (doc) {
+            for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            }
+          }, '']
+        }
+      },
+      loader: {
+        load: ['[tex]/noerrors']
+      }
+    };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+
+<style>
+pre {
+;	border	: 1px solid black
+}
+</style>
+<h1>Fitting a cubic Bezier curve</h1>
+Written in JavaScript.<br>
+by Satoru Ogura | <a href=https://satachito.github.io/TechBLOG/>https://satachito.github.io/TechBLOG/</a> | Jan 21 2021<br>
+
+
+<h2>Abstruct</h2>
+<hr>
+Fitting a cubic Bezier curve to four or more points in sequence using the least-squares method.
+<br>
+<br>
+<a href="https://satachito.github.io/BezierCPs/">https://satachito.github.io/BezierCPs/</a>
+
+<h2>Result</h2>
+<hr>
+The black dots are the clicked points and the red dots are the control points of the obtained cubic Bezier curve.
+<ul>
+<li>Where 4 points are specified</li>
+</ul>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/73493/fbf8c50c-0905-c9d6-6129-a078aa900486.png" alt="Screen Shot 2021-01-04 20.59.43.png" /></p>
+<ul>
+<li>Where 7 points are specified</li>
+</ul>
+<p><img src="https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/73493/8ecad0d7-ba8a-ea75-0182-a63ccdac4cec.png" alt="Screen Shot 2021-01-04 20.59.54.png" /></p>
+<h2>Program</h2>
+<h3>CurveFit.js</h3>
+<pre><code>
+export default
+_ =&gt; {
+	const l = _.length - 1
+	const s = _[ 0 ]
+	const e = _[ l ]
+
+	let	pp = 0, pq = 0, qp = 0, qq = 0, p = 0, q = 0
+	for ( let $ = 1; $ &lt; l; $++ ) {	//	Bypass first and last element, because 't' or 'u' will be zero.
+		const t = $ / l
+		const u = 1 - t
+		const P = 3 * u * u * t
+		const Q = 3 * u * t * t
+		pp += P * P
+		qq += Q * Q
+		const PQ = P * Q
+		pq += PQ
+		qp += PQ
+		const R = _[ $ ] - u * u * u * s - t * t * t * e
+		p += P * R
+		q += Q * R
+	}
+
+	const dm = pp * qq - pq * qp
+
+	return [
+		+ p * qq / dm - q * pq / dm
+	,	- p * qp / dm + q * pp / dm
+	]
+}
+</code></pre>
+<h3>index.html</h3>
+<pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=zxx&gt;
+&lt;title&gt;Bezier - LeastSquares&lt;/title&gt;
+
+&lt;div&gt;CLICK 4 or more points please.&lt;/div&gt;
+&lt;canvas id=Canvas width=500 height=500 style=&quot;border: 1px solid black&quot;&gt;&lt;/canvas&gt;
+&lt;br&gt;
+&lt;button id=Clear&gt;CLEAR&lt;/button&gt;
+
+&lt;script type=module&gt;
+
+const
+C2D = Canvas.getContext( '2d' )
+const
+Dot = ( x, y ) =&gt; C2D.fillRect( x -2, y - 2, 4, 4 )
+
+import CurveFit from './path/to/CurveFit.js'
+
+const
+$ = []
+
+const
+Draw = () =&gt; {
+	C2D.clearRect( 0, 0, Canvas.width, Canvas.height )
+	if ( $.length &gt; 3 ) {
+		C2D.beginPath()
+		C2D.moveTo( ...$[ 0 ] )
+		const [ xP, xQ ] = CurveFit( $.map( _ =&gt; _[ 0 ] ) )
+		const [ yP, yQ ] = CurveFit( $.map( _ =&gt; _[ 1 ] ) )
+		C2D.bezierCurveTo( xP, yP, xQ, yQ, ...$[ $.length - 1 ] )
+		C2D.strokeStyle = 'red'
+		C2D.stroke()
+		C2D.fillStyle = 'red'
+		Dot( xP, yP )
+		Dot( xQ, yQ )
+	}
+	C2D.fillStyle = 'black'
+	$.forEach( _ =&gt; Dot( ..._ ) )
+}
+
+Clear.onclick = () =&gt; ( $.length = 0, Draw() )
+
+Canvas.onclick = ev =&gt; ( $.push( [ ev.offsetX, ev.offsetY ] ), Draw() )
+
+&lt;/script&gt;
+</code></pre>
+
+<h2>CODEPEN</h2>
+<p class="codepen" data-height="300" data-default-tab="html,result" data-slug-hash="GRpgwwQ" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/satachito/pen/GRpgwwQ">
+  Untitled</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+<h2>Explanation</h2>
+First, we think in two dimensions.<br>
+<br>
+A two-dimensional cubic Bézier curve with starting point (sx, sy), control point 1 (px, py), control point 2 (qx, qy), and end point (ex, ey), is represented by the following equation with <code>t</code> as the mediator variable.<br>
+
+\[\left[ \begin{array}{c} x \\ y \end{array} \right]=\left[ \begin{array}{c} (1-t)^3s_x+3(1-t)^2t p_x + 3(1-t)t^2 q_x+t^3e_x \\ (1-t)^3s_y+3(1-t)^2t p_y+3(1-t)t^2 q_y+t^3e_y \end{array} \right],\; t=0…1
+\]
+
+If you prepare a function like the following
+
+\[bz(t,s,p,q,e)=(1-t)^3s+3(1-t)^2t p + 3(1-t)t^2 q+t^3e
+\]
+
+This formula can also be written this way.
+
+\[\left[ \begin{array}{c} x \\ y \end{array} \right]=\left[ \begin{array}{c} bz(t,s_x,p_x,q_x,e_x) \\ bz(t,s_y,p_y,q_y,e_y) \end{array} \right],\; t=0…1
+\]
+
+Since we are using the least-squares method, let's first find the error function.
+First, let us consider the case where 4 points are clicked: <code>cs, c1, c2, ce</code> in the order of clicks. If we compute the two points <code>d1</code> and <code>d2</code>, the error can be considered as follows.
+
+\[||\vec{c_1d_1}||+||\vec{c_2d_2}||
+\]
+
+For the least-squares method, only the magnitude of the error is important, so to make it easier to handle, this is squared and divided by 2. We get the following
+
+\[\frac{{(d1_x-c1_x)}^{2} + {(d1_y-c1_y)}^{2} + {(d2_x-c2_x)}^{2} + {(d2_y-c2_y)}^{2}}{2}
+\]
+
+To find d1 and d2, fit <code>t</code> into a cubic Bézier equation as follows
+
+\[t = \frac {1}{3}\ ,\frac {2}{3}\
+\]
+
+There are other ways to determine <code>t</code>, but this is usually sufficient.
+
+
+Let's generalize to the case of N points clicked.
+
+\[J = \sum_{i=1}^{n-2}\frac 1{2}(bz(\frac i{n-1},s_x,p_x,q_x,e_x)-ci_x)^2+\sum_{i=1}^{n-2}\frac 1{2}(bz(\frac i{n-1},s_y,p_y,q_y,e_y)-ci_y)^2
+
+\]
+
+Differentiate in Σ for <code>px,qx,py,qy</code>. px,qx and py,qy are exclusive, so we can eventually differentiate for the functions bz and ci.
+
+\[(bz(t,s,p,q,e)-c)^2
+\]
+
+Expanding bz with u as ( 1 - t )
+
+\[
+Diff(c,t,s,p,q,e) = (u^3s+3u^2t p+3ut^2q+t^3e-c)^2
+
+\]
+
+If you put the following here
+
+\[A=u^3s,B=3u^2t,C=3ut^2,D=t^3e,E=-c
+\]
+
+Get the following
+
+\[Diff(c,t,s,p,q,e) = (A + Bp + Cq + D + E)^2
+\\
+= B^2p^2 + C^2q^2 + 2BCpq + 
+\\ 2ABp + 2ACq + 2BDp + 2BEp + 2CDq + 2CEq + 
+\\ A^2 + D^2 + E^2 + 2AD + 2AE + 2DE
+\]
+
+Partial differentiation by p and q. In addition, divide by 2.
+
+\[
+\frac{\partial Diff}{2\partial p}=B^2p + BCq + AB + BD + BE　
+\]
+
+\[
+\frac{\partial Diff}{2\partial q}=BCp + C^2q + AC + CD + CE
+\]
+
+Returning <code>A,B,C,D,E</code> yields the following
+
+\[\frac{\partial Diff}{2\partial p}
+=9u^4t^2p + 9u^3t^3q + 3u^5ts + 3u^2t^4e - 3u^2tc
+\\=(3u^2t)( 3u^2tp + 3ut^2q + u^3s + t^3e - c )
+\]
+
+\[\frac{\partial Diff}{2\partial q}
+=9u^3t^3p + 9u^2t^4q + 3u^4t^2s + 3ut^5e - 3ut^2c
+\\=(3ut^2)( 3u^2tp + 3ut^2q + u^3s + t^3e - c )
+\]
+
+Finally, the coefficients are added by the amount of <code>Σ</code>, and the simultaneous equations for <code>p</code> and <code>q</code> are solved and returned.
+<br>
+If you want to make it 3D, you should simply call <code>BezierCPs</code> for the <code>z</code> coordinate.
+<br>
+
+<h2>Ending</h2>
+
+I have made it an npm package.
+<a href="https://www.npmjs.com/package/@satachito/curve_fit">https://www.npmjs.com/package/@satachito/curve_fit</a>
+Enjoy!
+
+
