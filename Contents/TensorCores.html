@@ -1,0 +1,137 @@
+<style>
+pre {
+;	border		: 1px solid black
+;	tab-size	: 4
+;	padding		: 8px
+}
+</style>
+
+<h1>Discover the power of Tensor Cores</h1>
+Written in C++ and CUDA.<br>
+by Satoru Ogura | <a href=https://satachito.github.io/TechBLOG/>https://satachito.github.io/TechBLOG/</a> | Feb 22 2022<br>
+<br>
+<a href=https://developer.nvidia.com/tensor-cores>Tensor Cores in NVIDIA site</a><br>
+<br>
+Tensor Cores are units that can perform multiple simple calculations simultaneously, and are said to be especially capable of performing the dense matrix product required in AI. So let's check it out by measuring the time to multiply a 512 x 1024 matrix by a 1024 x 2048 matrix.<br>
+<br>
+All matrices are in Row-major order.<br>
+<a href=https://en.wikipedia.org/wiki/Row-_and_column-major_order>Row-major order</a><br>
+<br>
+We have placed the complete program at the following address, and here are excerpts from it.<br>
+<a href=https://github.com/Satachito/matpro>https://github.com/Satachito/matpro</a><br>
+
+<h2>Environment</h2>
+<dl>
+	<dt>CPU
+		<dd>Intel(R) Xeon(R) CPU @ 2.80GHz<dd>
+	</dt>
+	<dt>GPU
+		<dd>A100<dd>
+		<dd>GEFORCE RTX 3090<dd>
+		<dd>T4<dd>
+	</dt>
+</dl>
+
+<h2>Preparation</h2>
+
+<pre><code>
+#define	M	512
+#define	K	1024
+#define	N	2048
+
+</code></pre>
+
+<h2>Using standard C++</h2>
+
+<pre><code>
+void
+MatPro( float* a, float* b, float* c ) {
+	for ( auto m = 0; m < M; m++ ) {
+		for ( auto n = 0; n < N; n++ ) {
+			auto $ = 0.;
+			for ( auto k = 0; k < K; k++ ) $ += a[ m * K + k ] * b[ k * N + n ];
+			c[ m * N + n ] = $;
+		}
+	}
+}
+
+</code></pre>
+
+The computation time with this program is about 317,639 μs. With -Ofast option.
+
+<h2>Using CUDA Cores</h2>
+<code><pre>
+
+__global__ void
+MatPro( float* a, float* b, float* c ) {
+	auto $ = 0.;
+	auto n = blockIdx.x * blockDim.x + threadIdx.x;
+	auto m = blockIdx.y * blockDim.y + threadIdx.y;
+	for ( auto k = 0; k < K; k++ ) $ += a[ m * K + k ] * b[ k * K + n ];
+	c[ m * N + n ] = $;
+}
+
+MatPro<<< dim3( N / 32, M / 32 ), dim3( 32, 32 ) >>>( a, b, c );
+
+</code></pre>
+
+The computation time with this program is listed below.
+
+<table border=1>
+	<tr><th>A100</th><th>RTX 3090</th><th>T4</th></tr>
+	<tr><td>1,222μs</td><td>9,329μs</td><td>52,495μs</td></tr>
+</table>
+
+
+<h2>Using Tensor Cores with half precision data.</h2>
+
+<code><pre>
+template < typename F > __global__ void
+MatPro(
+	const	half*	_a
+,	const	half*	_b
+,			F*		_c
+) {
+	wmma::fragment< wmma::matrix_a, 16, 16, 16, half, wmma::row_major > a;
+	wmma::fragment< wmma::matrix_b, 16, 16, 16, half, wmma::row_major > b;
+	wmma::fragment< wmma::accumulator, 16, 16, 16, F > c;
+
+	wmma::fill_fragment( c, 0 );
+
+	for ( auto k = 0; k < K; k += 16 ) {
+		wmma::load_matrix_sync( a, _a + ( blockIdx.y * K * 16 + k ), K );
+		wmma::load_matrix_sync( b, _b + ( k * N + blockIdx.x * 16 ), N );
+		wmma::mma_sync( c, a, b, c );
+	}
+
+	wmma::store_matrix_sync( _c + ( blockIdx.y * N * 16 + blockIdx.x * 16 ), c, N, wmma::mem_row_major );
+}
+
+MatPro< F ><<< dim3( N / 16, M / 16 ), 32 >>>( a, b, c );
+
+</code></pre>
+
+The computation time with this program is listed below.
+
+<table border=1>
+	<caption>In case of result is in single(32bit) precision.</caption>
+	<tr><th>A100</th><th>RTX 3090</th><th>T4</th></tr>
+	<tr><td>547μs</td><td>472μs</td><td>2035μs</td></tr>
+</table>
+
+<table border=1>
+	<caption>In case of result is in half(16bit) precision.</caption>
+	<tr><th>A100</th><th>RTX 3090</th><th>T4</th></tr>
+	<tr><td>435μs</td><td>319μs</td><td>1,815μs</td></tr>
+</table>
+
+
+<h2>Conclusion</h2>
+
+In computing matrix products, Tensor Cores shows that using half-precision data can save memory and increase computation speed.
+
+<h2>Bonus</h2>
+
+<a href=https://github.com/Satachito/matpro>https://github.com/Satachito/matpro</a>
+This repository contains sample code that performs matrix products in a variety of ways, including multi-CPU and SIMD (AVX-512).
+

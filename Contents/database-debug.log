@@ -1,0 +1,8 @@
+19:52:45.422 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+19:52:45.655 [main] INFO com.firebase.server.forge.App$ - Listening at 127.0.0.1:9000
+19:52:55.752 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO com.firebase.core.namespace.NamespaceActor - techblog-e490f-default-rtdb successfully activated FBKV (SurveyIdle(0)) wait: 116ms, init: 0ms
+19:52:55.812 [NamespaceSystem-blocking-namespace-operation-dispatcher-8] INFO com.firebase.core.namespace.StateManager - Namespace techblog-e490f-default-rtdb status Active to Active
+08:24:58.967 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+08:24:58.998 [NamespaceSystem-akka.actor.default-dispatcher-10] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: techblog-e490f-default-rtdb
+08:24:59.006 [NamespaceSystem-akka.actor.default-dispatcher-10] INFO com.firebase.core.namespace.NamespaceActor - stopped namespace actor for techblog-e490f-default-rtdb
+08:24:59.011 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.
