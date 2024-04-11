@@ -68,9 +68,9 @@ auth = getAuth( app )
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		() ).catch( er => alert( er.message ) )
-E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	() ).catch( er => alert( er.message ) )
-E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		() ).catch( er => alert( er.message ) )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		(), { redirectUrl: 'https://satachito.github.io/TechBlog/' } ).catch( er => alert( er.message ) )
+E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	(), { redirectUrl: 'https://satachito.github.io/TechBlog/' } ).catch( er => alert( er.message ) )
+E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		(), { redirectUrl: 'https://satachito.github.io/TechBlog/' } ).catch( er => alert( er.message ) )
 
 E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
 E( 'REGISTER_EMAIL_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
