@@ -5,9 +5,7 @@
 	<input	id=PASSWORD_I	type=password	placeholder=password	autocomplete=new-password	>
 	<button	id=EMAIL_LOGIN_B	>Login with Email	</button>
 	<button	id=REGISTER_EMAIL_B	>Register your Email</button>
-	<br>
-	<hr>
-	<br>
+	<br><hr><br>
 	<button	id=GOOGLE_LOGIN_B	>Login with Google	</button>
 	<button	id=FACEBOOK_LOGIN_B	>Login with Facebook</button>
 	<button	id=GITHUB_LOGIN_B	>Login with GitHub	</button>
@@ -26,39 +24,39 @@ input, button {
 
 <script type=module>
 import {
-    initializeApp
+	initializeApp
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"
 const
 app = initializeApp(
-	{	apiKey				: "AIzaSyC9duBDgIRfIMe2ZSOW6_Y9njJ2_ciPex8"
-	,	authDomain			: "techblog-e490f.firebaseapp.com"
-	,	databaseURL			: "https://techblog-e490f-default-rtdb.firebaseio.com"
-	,	projectId			: "techblog-e490f"
-	,	storageBucket		: "techblog-e490f.appspot.com"
-	,	messagingSenderId	: "433742686757"
-	,	appId				: "1:433742686757:web:f3492d7e218274c08dedcc"
-	,	measurementId		: "G-F92M3LRGRN"
+	{	apiKey				: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4"
+	,	authDomain			: "exp-fb-c223c.firebaseapp.com"
+	,	databaseURL			: "https://exp-fb-c223c-default-rtdb.asia-southeast1.firebasedatabase.app"
+	,	projectId			: "exp-fb-c223c"
+	,	storageBucket		: "exp-fb-c223c.appspot.com"
+	,	messagingSenderId	: "1046625556668"
+	,	appId				: "1:1046625556668:web:86e0b84397eb59b27018b9"
+	,	measurementId		: "G-NLBQYBPKPD"
 	}
 )
 
 import {
-    getAnalytics
+	getAnalytics
 } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js'
 const
 analytics = getAnalytics( app )
 
 import {
-    connectAuthEmulator
-,   getAuth
-,   onAuthStateChanged
-,   signInWithEmailAndPassword
-,   signInWithPopup
-,   sendEmailVerification
-,   createUserWithEmailAndPassword
-,   GoogleAuthProvider
-,   FacebookAuthProvider
-,   GithubAuthProvider
-,   signOut
+	connectAuthEmulator
+,	getAuth
+,	onAuthStateChanged
+,	signInWithEmailAndPassword
+,	signInWithPopup
+,	sendEmailVerification
+,	createUserWithEmailAndPassword
+,	GoogleAuthProvider
+,	FacebookAuthProvider
+,	GithubAuthProvider
+,	signOut
 } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js'
 const
 auth = getAuth( app )
@@ -68,28 +66,29 @@ location.hostname === 'localhost' && connectAuthEmulator( auth, 'http://localhos
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'     ).onclick = () => signInWithPopup( auth, new GoogleAuthProvider     () ).catch( er => alert( er.message ) )
-E( 'FACEBOOK_LOGIN_B'   ).onclick = () => signInWithPopup( auth, new FacebookAuthProvider   () ).catch( er => alert( er.message ) )
-E( 'GITHUB_LOGIN_B'     ).onclick = () => signInWithPopup( auth, new GithubAuthProvider     () ).catch( er => alert( er.message ) )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		() ).catch( er => alert( er.message ) )
+E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	() ).catch( er => alert( er.message ) )
+E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		() ).catch( er => alert( er.message ) )
 
-E( 'EMAIL_LOGIN_B'      ).onclick = () => signInWithEmailAndPassword        ( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
-E( 'REGISTER_EMAIL_B'   ).onclick = () => createUserWithEmailAndPassword    ( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
+E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
+E( 'REGISTER_EMAIL_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
 
 onAuthStateChanged(
-    auth
-,   user => (
-        E( 'LOGIN_D' ).close()
-    ,   user
-        ?   (   user.emailVerified || (
-                    sendEmailVerification( user ).then( () => alert( 'A confirmation email has been sent to the address provided. Kindly click the link within the email to confirm delivery.' ) )
-                ,   signOut( auth )
-                )
-            ,   E( 'USER_B' ).textContent   = 'Sign out from: ' + user.email
-            ,   E( 'USER_B' ).onclick       = () => signOut( auth ).then( () => alert( 'Signed out:\n' + user.email ) )
-            )
-        :   (   E( 'USER_B' ).textContent   = 'Sign in/up'
-            ,   E( 'USER_B' ).onclick       = () => E( 'LOGIN_D' ).showModal()
-            )
-    )
+	auth
+,	user => (
+		E( 'LOGIN_D' ).close()
+	,	user
+		?	(	user.emailVerified || (
+					sendEmailVerification( user ).then( () => alert( 'A confirmation email has been sent to the address provided. Kindly click the link within the email to confirm delivery.' ) )
+				,	signOut( auth )
+				)
+			,	E( 'USER_B' ).textContent	= 'Sign out from: ' + user.email
+			,	E( 'USER_B' ).onclick		= () => signOut( auth ).then( () => alert( 'Signed out:\n' + user.email ) )
+			)
+		:	(	E( 'USER_B' ).textContent	= 'Sign in/up'
+			,	E( 'USER_B' ).onclick		= () => E( 'LOGIN_D' ).showModal()
+			)
+	)
 )
 </script>
+
