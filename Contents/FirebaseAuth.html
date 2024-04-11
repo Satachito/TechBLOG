@@ -29,7 +29,7 @@ import {
 const
 app = initializeApp(
 	{	apiKey				: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4"
-	,	authDomain			: "satachito.github.io"
+	,	authDomain			: location.hostname
 	,	projectId			: "exp-fb-c223c"
 	,	messagingSenderId	: "1046625556668"
 	,	appId				: "1:1046625556668:web:86e0b84397eb59b27018b9"
@@ -48,7 +48,7 @@ import {
 ,	getAuth
 ,	onAuthStateChanged
 ,	signInWithEmailAndPassword
-,	signInWithPopup
+,	signInWithRedirect
 ,	sendEmailVerification
 ,	createUserWithEmailAndPassword
 ,	GoogleAuthProvider
@@ -61,12 +61,14 @@ auth = getAuth( app )
 
 //	location.hostname === 'localhost' && connectAuthEmulator( auth, 'http://localhost:9099' )
 
+//	getRedirectResult( auth ), 'getRedirectResult' )
+
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		() ).catch( er => alert( er.message ) )
-E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	() ).catch( er => alert( er.message ) )
-E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		() ).catch( er => alert( er.message ) )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		() ).catch( er => alert( er.message ) )
+E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	() ).catch( er => alert( er.message ) )
+E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		() ).catch( er => alert( er.message ) )
 
 E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
 E( 'REGISTER_EMAIL_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
