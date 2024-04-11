@@ -5,45 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Start a membership service with Firebase</title>
 
-<script type="module">
-import {
-	initializeApp
-} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"
-const
-app = initializeApp(
-	{	apiKey				: "AIzaSyC9duBDgIRfIMe2ZSOW6_Y9njJ2_ciPex8"
-	,	authDomain			: "techblog-e490f.firebaseapp.com"
-	,	databaseURL			: "https://techblog-e490f-default-rtdb.firebaseio.com"
-	,	projectId			: "techblog-e490f"
-	,	storageBucket		: "techblog-e490f.appspot.com"
-	,	messagingSenderId	: "433742686757"
-	,	appId				: "1:433742686757:web:f3492d7e218274c08dedcc"
-	,	measurementId		: "G-F92M3LRGRN"
-	}
-)
-
-import {
-	getAnalytics
-} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js"
-const
-analytics = getAnalytics( app )
-
-import {
-	getStorage, ref, getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js"
-const
-storage = getStorage( app )
-
-const
-SetImage = ( path, tag ) => getDownloadURL( ref( storage, path ) ).then(
-	_ => document.getElementById( tag ).src = _
-).catch(
-	er => alert( er.message )
-)
-SetImage( 'HOME.png', 'IMG_HOME' )
-SetImage( 'LOGIN_D.png', 'IMG_LOGIN_D' )
-</script>
-
 <style>
 body {
 ;	max-width			: 640px
@@ -83,7 +44,7 @@ pre > code {
 
 <h3>Fictitious Service Details</h3>
 
-<img id="IMG_HOME" alt="Home image">
+<img src="HOME.png" alt="Home image">
 
 <p>This service is purely fictitious and will not be developed or released in reality.
 Security must be carefully considered when developing this service.</p>
@@ -151,7 +112,7 @@ Security must be carefully considered when developing this service.</p>
 <h4>Implementing a Robust Login Solution</h4>
 <p>Considering this landscape, directly utilizing Firebase's features to implement login functionality emerges as the most viable option from a long-term perspective.</p>
 
-<img id="IMG_LOGIN_D" alt="Login dialog image">
+<img src="LOGIN_D.png" alt="Login dialog image">
 
 <p>By embracing the latest developments in Firebase and implementing login functionality directly, developers can ensure the longevity and adaptability of their applications.</p>
 

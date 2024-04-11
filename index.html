@@ -44,7 +44,6 @@ li {
 </style>
 
 <header>
-	<a href="/"><img src=SliP.png width=64 height=64/></a>
 	<span style="font-size: 48px; font-weight: bold">SliP LLC, Tokyo.</span>
 </header>
 
@@ -148,10 +147,10 @@ contents.forEach(
 	}
 )
 
-window.onload = () => {
-	console.log( JSON.stringify( location, null, '\t' ) )
-	const _ = contents.find( $ => location.search === '?_=' + $[ 1 ] )
+//	console.log( JSON.stringify( location, null, '\t' ) )
+{	const _ = contents.find( $ => location.search === '?_=' + $[ 1 ] )
 	CONTENT.setAttribute( 'src', _ ? 'Contents/' + _[ 1 ] + '.html' : 'Welcome.html' )
 }
+
 </script>
 
