@@ -1,99 +1,156 @@
-<button id=USER_B onclick=LOGIN_D.showModal()>Sign in/up</button>
-<dialog id=LOGIN_D>
-	<button	onclick=LOGIN_D.close()>close</button><br>
-	<input	id=EMAIL_I		type=email		placeholder=email		autocomplete=username		>
-	<input	id=PASSWORD_I	type=password	placeholder=password	autocomplete=new-password	>
-	<button	id=EMAIL_LOGIN_B	>Login with Email	</button>
-	<button	id=REGISTER_EMAIL_B	>Register your Email</button>
-	<br><hr><br>
-	<button	id=GOOGLE_LOGIN_B	>Login with Google	</button>
-	<button	id=FACEBOOK_LOGIN_B	>Login with Facebook</button>
-	<button	id=GITHUB_LOGIN_B	>Login with GitHub	</button>
-</dialog>
+<!DOCTYPE html>
+<html lang=en>
+<title>SliP Tech BLOG</title>
 
 <style>
-*, *::before, *::after {
-; box-sizing	: border-box
+* {
+;	margin					: 0
+;	font-family: "Consolas", "Courier New", "Lucida Console", Monaco, monospace
+
+;	transition				: all 0.3s ease
 }
 
-input, button {
-; width			: 100%
-; margin		: 10px 0
+html {
+;	height					: 100%
 }
+body {
+;	height					: 100%
+;	margin					: 0
+;	display					: grid
+;	grid-template-rows		: auto 1fr auto
+;	grid-template-columns	: 256px 1fr auto
+}
+header, footer {
+;	grid-column				: 1 / 4
+;	padding					: 2px 5px
+}
+
+header	{	padding			: 12px }
+nav		{	padding			: 12px }
+footer	{	padding			: 12px }
+
+header	{	border-bottom	: 1px solid black }
+footer	{	border-top		: 1px solid black }
+nav		{	border-right	: 1px solid black }
+aside	{	border-left		: 1px solid black }
+
+li {
+;	color					: blue
+;	text-decoration			: underline
+;	cursor					: pointer
+;	margin-bottom			: 16px
+}
+
 </style>
 
+<header>
+	<span style="font-size: 48px; font-weight: bold">SliP LLC, Tokyo.</span>
+</header>
+
+<nav>
+	<h1>Tech BLOG</h1>
+	<br>
+	<ul id=ARTICLES style="list-style-type: square; padding-left: 12px"></ul>
+	<br>
+	<h1>Services</h1>
+	<br>
+	<ul style="list-style-type: square; padding-left: 12px">
+	<li><a href=https://slip.828.tokyo>SliP, the monster calculator</a></li>
+	<li><a href=https://vecedit-b5a34.web.app/>VecEdit: the SVG Editor(WIP)</a></li>
+	</ul>
+	<br>
+	<h1>Applications</h1>
+	<br>
+	<ul style="list-style-type: square; padding-left: 12px">
+	<li><a href=https://apps.apple.com/jp/app/slip/id1097457043?mt=12>SliP, Free on AppStore</a></li><br>
+	</ul>
+	<br>
+	<div style="background:#fff;width:120px;height:215px;box-sizing:border-box;border:1px solid #ccc;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;"><div style="line-height:0;"><img src="https://static.jp.mercari.com/assets/img/common/jp/logo_horizontal.png" width="105"></div><a href="https://jp.mercari.com/item/m16982693264?afid=4374042662" style="width:100px;height:100px;background:#eee;"}" target="_self"><img src="https://ambassador-system.mercari.com/v1/i?id=m16982693264&svc=m" style="line-height:0;width:100px;height:100px;object-fit:contain;"/></a><div style="padding:12px 0;width:100%;text-align:center;"><a href="https://jp.mercari.com/item/m16982693264?afid=4374042662" style="width:100px;height:32px;background-color:#E32B36;border-radius:4px;line-height:14px;text-align:center;color:#fff;font-weight:bold;border:0;font-size:12px;display:inline-flex;justify-content:center;align-items:center;" target="_self">今すぐ購入</a></div></div>
+</nav>
+
+<iframe id=CONTENT style="border: none; width: 100%; height: 100%"></iframe>
+<aside></aside>
+
 <script type=module>
-import {
-	initializeApp
-} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"
+
 const
-app = initializeApp(
-	{	apiKey: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4",
-		authDomain: "exp-fb-c223c.firebaseapp.com",
-		databaseURL: "https://exp-fb-c223c-default-rtdb.asia-southeast1.firebasedatabase.app",
-		projectId: "exp-fb-c223c",
-		storageBucket: "exp-fb-c223c.appspot.com",
-		messagingSenderId: "1046625556668",
-		appId: "1:1046625556668:web:86e0b84397eb59b27018b9",
-		measurementId: "G-NLBQYBPKPD"
+contents = [
+	[	'Creating a membership service with firebase'
+	,	'Firebase'
+	,	'2024/04/07'
+	,	[	'Firebase'
+		,	'JavaScript'
+		,	'HTML'
+		,	'css'
+		]
+	]
+,	[	'Understanding Custom Elements and Web Components'
+	,	'CEvsWC'
+	,	'2024/03/09'
+	,	[	'CustomElements'
+		,	'JavaScript'
+		,	'HTML'
+		,	'WebComponents'
+		]
+	]
+,	[	'Unleashing the Power of CustomElements in Web Development'
+	,	'CustomElements'
+	,	'2024/01/01'
+	,	[	'CustomElements'
+		,	'JavaScript'
+		,	'HTML'
+		,	'WebComponents'
+		]
+	]
+,	[	'Discover the power of Tensor Cores'
+	,	'TensorCores'
+	,	'2022/06/16'
+	,	[	'Tensor'
+		,	'Matrix'
+		,	'CUDA'
+		,	'C++'
+		]
+	]
+,	[	'Fitting a cubic Bezier curve'
+	,	'CurveFit'
+	,	'2021/01/05'
+	,	[	'Graphics'
+		,	'Bezier'
+		,	'Curve'
+		,	'JavaScript'
+		]
+	]
+,	[	'Create Firebase Project'
+	,	'CreateFirebaseProject'
+	,	'2024/4/3'
+	,	[	'Firebase'
+		,	'Project'
+		,	'JavaScript'
+		]
+	]
+,	[	'About Satoru Ogura'
+	,	'Resume'
+	,	'2023/11/22'
+	,	[	'Graphics'
+		,	'Bezier'
+		,	'Curve'
+		,	'JavaScript'
+		]
+	]
+]
+contents.forEach(
+	$ => {
+		const li = ARTICLES.appendChild( document.createElement( 'li' ) )
+		li.textContent = $[ 0 ] + '(' + $[ 2 ] + ')'
+		li.classList.add( 'article' )
+		li.onclick = () => location.href = location.origin + location.pathname + '?_=' + $[ 1 ]
 	}
 )
 
-import {
-	getAnalytics
-} from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js'
-const
-analytics = getAnalytics( app )
+//	console.log( JSON.stringify( location, null, '\t' ) )
+{	const _ = contents.find( $ => location.search === '?_=' + $[ 1 ] )
+	CONTENT.setAttribute( 'src', _ ? 'Contents/' + _[ 1 ] + '.html' : 'Welcome.html' )
+}
 
-import {
-	connectAuthEmulator
-,	getAuth
-,	onAuthStateChanged
-,	signInWithEmailAndPassword
-,	signInWithPopup
-,	signInWithRedirect
-,	getRedirectResult
-,	sendEmailVerification
-,	createUserWithEmailAndPassword
-,	GoogleAuthProvider
-,	FacebookAuthProvider
-,	GithubAuthProvider
-,	signOut
-} from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js'
-const
-auth = getAuth( app )
-
-//	location.hostname === 'localhost' && connectAuthEmulator( auth, 'http://localhost:9099' )
-
-getRedirectResult( auth )
-
-const
-E = _ => document.getElementById( _ )
-
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		() )
-E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	() )
-E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		() )
-
-E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
-E( 'REGISTER_EMAIL_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
-
-onAuthStateChanged(
-	auth
-,	user => (
-		E( 'LOGIN_D' ).close()
-,console.log( 'onAuth', user )
-	,	user
-		?	(	user.emailVerified || (
-					sendEmailVerification( user ).then( () => alert( 'A confirmation email has been sent to the address provided. Kindly click the link within the email to confirm delivery.' ) )
-				,	signOut( auth )
-				)
-			,	E( 'USER_B' ).textContent	= 'Sign out from: ' + user.email
-			,	E( 'USER_B' ).onclick		= () => signOut( auth ).then( () => alert( 'Signed out:\n' + user.email ) )
-			)
-		:	(	E( 'USER_B' ).textContent	= 'Sign in/up'
-			,	E( 'USER_B' ).onclick		= () => E( 'LOGIN_D' ).showModal()
-			)
-	)
-)
 </script>
 
