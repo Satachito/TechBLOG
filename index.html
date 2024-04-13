@@ -81,6 +81,7 @@ onAuthStateChanged(
 	auth
 ,	user => (
 		E( 'LOGIN_D' ).close()
+,console.log( 'onAuth', user )
 	,	user
 		?	(	user.emailVerified || (
 					sendEmailVerification( user ).then( () => alert( 'A confirmation email has been sent to the address provided. Kindly click the link within the email to confirm delivery.' ) )
