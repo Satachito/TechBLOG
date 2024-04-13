@@ -69,9 +69,9 @@ auth = getAuth( app )
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		(), { redirectUrl: 'https://tech.sat.tokyo/Contents/FirebaseAuth.html' } ).catch( er => alert( er.message ) )
-E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	(), { redirectUrl: 'https://tech.sat.tokyo/Contents/FirebaseAuth.html' } ).catch( er => alert( er.message ) )
-E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		(), { redirectUrl: 'https://tech.sat.tokyo/Contents/FirebaseAuth.html' } ).catch( er => alert( er.message ) )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		() ).catch( er => alert( er.message ) )
+E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	() ).catch( er => alert( er.message ) )
+E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		() ).catch( er => alert( er.message ) )
 //	E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		(), console.error ).catch( er => ( console.log( er ), alert( er.message ) ) )
 //	E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	(), console.error ).catch( er => ( console.log( er ), alert( er.message ) ) )
 //	E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		(), console.error ).catch( er => ( console.log( er ), alert( er.message ) ) )
