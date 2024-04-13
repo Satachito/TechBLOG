@@ -69,7 +69,7 @@ auth = getAuth( app )
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		(), { redirectUrl: 'https://satachito.github.io/TechBLOG/' } ).catch( er => alert( er.message ) )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		(), { redirectUrl: 'https://satachito.github.io/TechBLOG/' } )	//	.catch( er => alert( er.message ) )
 E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	(), { redirectUrl: 'https://satachito.github.io/TechBLOG/' } ).catch( er => alert( er.message ) )
 E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		(), { redirectUrl: 'https://satachito.github.io/TechBLOG/' } ).catch( er => alert( er.message ) )
 
