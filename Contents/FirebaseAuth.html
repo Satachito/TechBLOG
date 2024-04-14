@@ -98,7 +98,8 @@ E( 'DELETE_ACCOUNT_B'	).onclick = () => deleteUser( auth.currentUser )
 onAuthStateChanged(
 	auth
 ,	user => (
-		E( 'LOGIN_D' ).close()
+		console.log( 'onAuth', user )
+	,	E( 'LOGIN_D' ).close()
 	,	E( 'MY_D' ).close()
 	,	user
 		?	(	user.emailVerified || (
