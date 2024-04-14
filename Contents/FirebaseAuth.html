@@ -1,24 +1,35 @@
 <button id=USER_B onclick=LOGIN_D.showModal()>Sign in/up</button>
 <dialog id=LOGIN_D>
-	<button	onclick=LOGIN_D.close()>close</button><br>
+	<a		onclick=LOGIN_D.close()	>❌					</a>
 	<input	id=EMAIL_I		type=email		placeholder=email		autocomplete=username		>
 	<input	id=PASSWORD_I	type=password	placeholder=password	autocomplete=new-password	>
-	<button	id=EMAIL_LOGIN_B	>Login with Email	</button>
-	<button	id=REGISTER_EMAIL_B	>Register your Email</button>
+	<button	id=EMAIL_LOGIN_B		>Login with email	</button>
+	<button	id=CREATE_ACCOUNT_B		>Create account		</button>
+	<button	id=RESET_PASSWORD_B		>Reset password		</button>
 	<br><hr><br>
-	<button	id=GOOGLE_LOGIN_B	>Login with Google	</button>
-	<button	id=FACEBOOK_LOGIN_B	>Login with Facebook</button>
-	<button	id=GITHUB_LOGIN_B	>Login with GitHub	</button>
+	<button	id=GOOGLE_LOGIN_B		>Login with Google	</button>
+	<button	id=FACEBOOK_LOGIN_B		>Login with Facebook</button>
+	<button	id=GITHUB_LOGIN_B		>Login with GitHub	</button>
+</dialog>
+
+<dialog id=MY_D>
+	<a		onclick=MY_D.close()	>❌					</a>
+	<button	id=LOGOUT_B				>Logout				</button>
+	<button	id=DELETE_ACCOUNT_B		>Remove account		</button>
 </dialog>
 
 <style>
 *, *::before, *::after {
-; box-sizing	: border-box
+;	box-sizing	: border-box
 }
 
 input, button {
-; width			: 100%
-; margin		: 10px 0
+;	width		: 100%
+;	margin		: 10px 0
+}
+
+a, button {
+;	cursor		: pointer
 }
 </style>
 
@@ -28,14 +39,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"
 const
 app = initializeApp(
-	{	apiKey: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4"
-	,	authDomain: "exp-fb-c223c.firebaseapp.com"
-	,	databaseURL: "https://exp-fb-c223c-default-rtdb.asia-southeast1.firebasedatabase.app"
-	,	projectId: "exp-fb-c223c"
-	,	storageBucket: "exp-fb-c223c.appspot.com"
-	,	messagingSenderId: "1046625556668"
-	,	appId: "1:1046625556668:web:86e0b84397eb59b27018b9"
-	,	measurementId: "G-NLBQYBPKPD"
+	{	apiKey				: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4"
+	,	authDomain			: "exp-fb-c223c.firebaseapp.com"
+	,	databaseURL			: "https://exp-fb-c223c-default-rtdb.asia-southeast1.firebasedatabase.app"
+	,	projectId			: "exp-fb-c223c"
+	,	storageBucket		: "exp-fb-c223c.appspot.com"
+	,	messagingSenderId	: "1046625556668"
+	,	appId				: "1:1046625556668:web:86e0b84397eb59b27018b9"
+	,	measurementId		: "G-NLBQYBPKPD"
 	}
 )
 
@@ -53,42 +64,49 @@ import {
 ,	signInWithPopup
 ,	signInWithRedirect
 ,	getRedirectResult
+,	sendPasswordResetEmail
 ,	sendEmailVerification
 ,	createUserWithEmailAndPassword
 ,	GoogleAuthProvider
 ,	FacebookAuthProvider
 ,	GithubAuthProvider
 ,	signOut
+,	deleteUser
 } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js'
 const
 auth = getAuth( app )
 
 //	location.hostname === 'localhost' && connectAuthEmulator( auth, 'http://localhost:9099' )
 
-getRedirectResult( auth )
+//	getRedirectResult( auth )
 
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		() )
-E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	() )
-E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		() )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		() )
+E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	() )
+E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		() )
 
-E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
-E( 'REGISTER_EMAIL_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
+E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value	).catch( er => alert( er.message ) )
+E( 'CREATE_ACCOUNT_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value	).catch( er => alert( er.message ) )
+
+E( 'RESET_PASSWORD_B'	).onclick = () => sendPasswordResetEmail( auth, E( 'EMAIL_I' ).value ).then( () => alert( 'Password reset mail sent' ) ).catch( er => alert( er.message ) )
+
+E( 'LOGOUT_B'			).onclick = () => signOut( auth )
+E( 'DELETE_ACCOUNT_B'	).onclick = () => deleteUser( auth.currentUser )
 
 onAuthStateChanged(
 	auth
 ,	user => (
 		E( 'LOGIN_D' ).close()
-,console.log( 'onAuth', user )
+	,	E( 'MY_D' ).close()
 	,	user
 		?	(	user.emailVerified || (
 					sendEmailVerification( user ).then( () => alert( 'A confirmation email has been sent to the address provided. Kindly click the link within the email to confirm delivery.' ) )
 				,	signOut( auth )
 				)
-			,	E( 'USER_B' ).textContent	= 'Sign out from: ' + user.email
-			,	E( 'USER_B' ).onclick		= () => signOut( auth ).then( () => alert( 'Signed out:\n' + user.email ) )
+			,	E( 'USER_B' ).textContent	= 'MyPage: ' + user.email
+			,	E( 'USER_B' ).onclick		= () => E( 'MY_D' ).showModal()
 			)
 		:	(	E( 'USER_B' ).textContent	= 'Sign in/up'
 			,	E( 'USER_B' ).onclick		= () => E( 'LOGIN_D' ).showModal()
