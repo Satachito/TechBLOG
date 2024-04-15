@@ -46,65 +46,16 @@ img {
 
 <hr>
 <h3>Table of contents:</h3>
-<p><a href=#FSD>Fictious service details</a></p>
-<p><a href=#AUTH>Firebase authentication</a></p>
-<hr>
-
-<h2 id=FSD>Fictitious service details</h2>
-
-<img src=HOME.png alt="Home image">
-
-<p>This service is purely fictitious and will not be developed or released in reality.
-Security must be carefully considered when developing this service.</p>
-
-<h4>Concept:</h4>
 <ul>
-<li>Type: Investment information portal</li>
-<li>Revenue model: Advertising revenue and newsletter subscriptions</li>
-</ul>
-
-<h4>Functional requirements:</h4>
-<ul>
-	<li>User registration and login</li>
-	<li>Content management</li>
-	<li>Payment processing</li>
-	<li>External API integration:
+	<li><a href=#AUTH>Firebase authentication</a></li>
+	<li><a href=#SPA_ROUTER>SPA and Router</a>
 		<ul>
-			<li>Various market data APIs</li>
-			<li>Scraping</li>
-		</ul>
-	</li>
-	<li>Single-page application (SPA)</li>
-</ul>
-
-<h4>Security requirements:</h4>
-<ul>
-	<li>Only email addresses stored</li>
-	<li>No personal information collected</li>
-</ul>
-
-<h4>Technical requirements:</h4>
-<ul>
-	<li>Frontend: Vanilla JS</li>
-	<li>Backend: Firebase</li>
-	<li>Database: Firebase Firestore</li>
-	<li>Authentication: Firebase Authentication</li>
-	<li>Payment processing: Stripe</li>
-	<li>External APIs:
-		<ul>
-			<li>Cryptocurrency exchanges</li>
-			<li>Precios metals dealers</li>
+			<li><a href=#SPA>SPA</a></li>
+			<li><a href=#ROUTER>ROUTER</a></li>
 		</ul>
 	</li>
 </ul>
-
 <hr>
-
-<p>I hope this article will be helpful for those who want to start their own membership-based online service using Firebase!</p>
-<p>The source code is available on <a href=https://github.com/Satachito/exp-fb target=_blank>GitHub</a>. The dummy service is available at <a href=https://exp-fb-c223c.web.app/ target=_blank>https://exp-fb-c223c.web.app/</a>.
-<p>Please feel free to ask any questions you may have.</p>
-
-
 
 <h2 id=AUTH>Firebase authentication</h2>
 
@@ -146,15 +97,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"
 const
 app = initializeApp(
-	{	apiKey				: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4"
-	,	authDomain			: "exp-fb-c223c.firebaseapp.com"
-	,	databaseURL			: "https://exp-fb-c223c-default-rtdb.asia-southeast1.firebasedatabase.app"
-	,	projectId			: "exp-fb-c223c"
-	,	storageBucket		: "exp-fb-c223c.appspot.com"
-	,	messagingSenderId	: "1046625556668"
-	,	appId				: "1:1046625556668:web:86e0b84397eb59b27018b9"
-	,	measurementId		: "G-NLBQYBPKPD"
-	}
+//	YOUR CONFIG HERE
 )
 
 import {
@@ -254,6 +197,201 @@ onAuthStateChanged(
 
 <p>This article assumes that the Email Enumeration Protection feature is enabled.</p>
 <p>However, the Firebase Auth Emulator does not have this feature, so you need to deploy and debug the authentication functionality thoroughly.</p>
+
+
+<h2 id=SPA_ROUTER>SPA and Router</h2>
+
+To illustrate this chapter, we will assume the existence of the following fictional services.
+
+<img src=HOME.png alt="Home image">
+
+<h4>Concept:</h4>
+<ul>
+<li>Type: Investment information portal</li>
+<li>Revenue model: Advertising revenue and newsletter subscriptions</li>
+</ul>
+
+<h4>Functional requirements:</h4>
+<ul>
+	<li>User registration and login</li>
+	<li>Content management</li>
+	<li>Payment processing</li>
+	<li>External API integration:
+		<ul>
+			<li>Various market data APIs</li>
+			<li>Scraping</li>
+		</ul>
+	</li>
+	<li>Single-page application (SPA)</li>
+</ul>
+
+<h4>Security requirements:</h4>
+<ul>
+	<li>Only email addresses stored</li>
+	<li>No personal information collected</li>
+</ul>
+
+<h4>Technical requirements:</h4>
+<ul>
+	<li>Frontend: Vanilla JS</li>
+	<li>Backend: Firebase</li>
+	<li>Database: Firebase Firestore</li>
+	<li>Authentication: Firebase Authentication</li>
+	<li>Payment processing: Stripe</li>
+	<li>External APIs:
+		<ul>
+			<li>Cryptocurrency exchanges</li>
+			<li>Precios metals dealers</li>
+		</ul>
+	</li>
+</ul>
+
+<hr>
+
+<p>The source code is available on <a href=https://github.com/Satachito/exp-fb target=_blank>GitHub</a>. The dummy service is available at <a href=https://exp-fb-c223c.web.app/ target=_blank>https://exp-fb-c223c.web.app/</a>.
+
+<h3 id=SPA>SPA</h3>
+
+<p><b>SPA (Single Page Application)</b> is a web development approach that loads a single HTML page and dynamically updates its content as the user interacts with the application. This differs from traditional multi-page web applications, which reload the entire page when the user navigates to a different section.</p>
+
+<b>Key characteristics of SPAs include:</b>
+
+<ul>
+<li><b>Single-page structure:</b> SPAs consist of a single HTML page that serves as the foundation for the entire application. This eliminates the need for multiple page reloads, improving user experience and reducing perceived latency.</li>
+
+<li><b>Dynamic content updates:</b> SPAs utilize JavaScript frameworks like React, Angular, or Vue.js to dynamically update the page's content without reloading the entire page. This enables seamless transitions and a more responsive user interface.</li>
+
+<li><b>Client-side routing:</b> SPAs handle URL routing using JavaScript, intercepting user navigation requests and updating the application's state accordingly. This allows for smooth transitions between different sections of the application without the need for server-side interactions.</li>
+</ul>
+
+<b>Benefits of using SPAs:</b>
+
+<ul>
+<li><b>Enhanced user experience:</b> SPAs provide a more fluid and responsive user experience, as content updates occur without page reloads. This can lead to increased engagement and satisfaction among users.</li>
+
+<li><b>Improved performance:</b> SPAs can potentially improve performance by reducing the amount of data transferred between the client and server. This is because only the necessary content is loaded for each view, rather than reloading the entire page.</li>
+
+<li><b>Easier maintenance:</b> SPAs can be easier to maintain and update, as the entire application's code is contained within a single-page structure. This can streamline development and deployment processes.</li>
+</ul>
+
+<p><b>In the context of the fictional services mentioned above, for example:</b></p>
+
+<ul>
+<li>Stocks would be assigned the URL <code>/stock</code></li>
+<li>FX would be assigned the URL <code>/fx</code></li>
+<li>Metals would be assigned the URL <code>/metal</code></li>
+<li>Crypto would be assigned the URL <code>/crypto</code></li>
+<li>However, no actual content would be placed at these URLs.</li>
+</ul>
+
+<p><b>Normally, a web server would return a 404 (Not Found) error in this case. However, by configuring the server to rewrite requests, it can be instructed to return <code>/index.html</code> instead when a 404 occurs.</b></p>
+
+<p><b><code>/index.html</code> would then determine what to display based on the URL that was called.</b></p>
+
+<p><b>Therefore, SPAs are not just a programming problem; they also require careful consideration of server configuration.</b></p>
+
+<p><b>Here is a more detailed explanation:</b></p>
+
+<ul>
+<li>In a traditional web application, each URL is associated with a specific file or resource on the server. When a user visits a URL, the server sends the corresponding file or resource to the user's browser.</li>
+<li>In an SPA, there is only one HTML page (<code>/index.html</code>). This page contains all of the JavaScript code that is needed to run the application.</li>
+<li>When a user visits a URL, the server returns the <code>/index.html</code> page to the user's browser. The JavaScript code in <code>/index.html</code> then takes over and dynamically generates the content of the page based on the URL that was visited.</li>
+
+<li>In order for this to work on Firebase Hosting, you would specify rewrite rules into firebase.json fire in the root directory of your project.</li>
+<pre><code>
+{
+  ...
+  "hosting": {
+  	...
+    "rewrites": [
+      { "source": "/stock", "destination": "/index.html" },
+      { "source": "/fx", "destination": "/index.html" },
+      { "source": "/metal", "destination": "/index.html" },
+      { "source": "/crypto", "destination": "/index.html" }
+    ]
+  }
+  ...
+}
+</code></pre>
+<li>This can be also done using a variety of methods, such as Apache's mod_rewrite or Nginx's rewrite module.</li>
+
+
+<li>Once the server is configured to rewrite requests, the <code>/index.html</code> page can use JavaScript to determine what to display based on the URL that was visited. For example, if the user visits <code>/stock</code>, the <code>/index.html</code> page could display a stock ticker. If the user visits <code>/fx</code>, the <code>/index.html</code> page could display a currency exchange rate chart.</li>
+<li>SPAs have a number of advantages over traditional web applications. They can provide a more responsive and user-friendly experience, and they can be easier to develop and maintain. However, they also require more careful consideration of server configuration.</li>
+</ul>
+
+
+
+<h3 id=ROUTER>Routers: The Backbone of SPA Navigation</h3>
+
+<p>Routers play a crucial role in SPAs, enabling users to navigate between different parts of the application without reloading the entire page. They are responsible for interpreting the URL, identifying the appropriate route, and rendering the corresponding content.</p>
+
+<h4>Hash-Based Routing: The Traditional Approach</h4>
+<p>Hash-based routing, also known as fragment-based routing, utilizes the hash fragment (#) in the URL to determine the route. For instance, the URL <code>https://example.com/#/stock</code> would indicate the stock ticker route.</p>
+
+<h5>Advantages:</h5>
+<ul>
+<li>Simple implementation</li>
+</ul>
+
+<h5>Disadvantages:</h5>
+<ul>
+<li>Hash fragment is not part of the actual URL, affecting SEO and bookmarking</li>
+<li>Some search engines may not index hash-based URLs effectively</li>
+</ul>
+
+<h4>History API-Based Routing: The Modern Approach</h4>
+<p>History API-based routing leverages the browser's history API to manage the URL and maintain the user's navigation history. It provides a cleaner and more SEO-friendly approach to routing in SPAs.</p>
+
+<h5>Advantages:</h5>
+<ul>
+<li>Clean URLs that appear in the address bar</li>
+<li>Improved SEO and bookmarking capabilities</li>
+<li>Supports browser history features like back and forward buttons</li>
+</ul>
+
+<h5>Disadvantages:</h5>
+<li>Slightly more complex implementation compared to hash-based routing</li>
+
+<h4>Sample code(Vanilla JS)</h4>
+
+<p>While frameworks like Vue and React offer convenient routing solutions, Vanilla JavaScript routing provides a unique set of advantages, including enhanced flexibility, extensibility, and a deeper understanding of routing concepts.</p>
+
+<p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="LYpEXPY" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/satachito/pen/LYpEXPY">
+  Router</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+<h5>Vanilla JavaScript Routing: A Deeper Dive</h5>
+<p>Unlike framework-based routing, Vanilla JavaScript routing involves crafting custom JavaScript code to manage routing logic and DOM updates. This approach offers greater control over how routing is implemented, allowing for customization to suit specific needs.</p>
+
+
+<h5>Key Benefits of Vanilla JavaScript Routing:</h5>
+<ul>
+<li><b>Enhanced Flexibility:</b> Vanilla JavaScript routing grants complete control over routing implementation, enabling tailored solutions for unique requirements.</li>
+<li><b>Superior Extensibility:</b> Routing functionality can be seamlessly extended to support advanced features like nested routes and dynamic route parameters.</li>
+<li><b>Deeper Routing Understanding:</b> By writing your own router, you gain a profound understanding of routing mechanisms and their interaction with the DOM.</li>
+</ul>
+
+
+<h5>Leveraging Templates and Iframes:</h5>
+Vanilla JavaScript routing extends beyond component-based routing, enabling content rendering through templates or iframes:
+<ul>
+<li><b>Template-based Routing:</b> Templates or templating techniques can be employed to directly render content into the DOM.</li>
+<li><b>Iframe-based Routing:</b> Content can be loaded into iframes, allowing for embedding external pages or applications within the SPA.</li>
+</ul>
+
+
+<h5>Web Components: A Complementary Approach</h5>
+<p>Web Components serve as an alternative to framework-based components within Vanilla JavaScript routing. They offer reusable custom HTML elements with encapsulated behavior and styling, providing modularity and reusability.</p>
+
+
+<hr>
+<p>I hope this article will be helpful for those who want to start their own membership-based online service using Firebase!</p>
+<!-- And if possible, would you be willing to make a small donation? Your donation will help me create more helpful content in the future.</p> -->
+
 
 </body>
 
