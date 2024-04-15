@@ -13,12 +13,16 @@ pre {
 ;	background-color	: black
 ;	padding				: 12px
 ;	overflow			: scroll
+;	tab-size			: 4
 }
 code {
 ;	color				: blue
 }
 pre > code {
 ;	color				: yellow
+}
+img {
+;	max-width			: 320px
 }
 </style>
 </head>
@@ -41,10 +45,13 @@ pre > code {
 <p>In this article, I will explain the specific steps for starting a membership-based online service as an individual using Firebase, while creating a fictitious service with slightly relaxed security as an example.</p>
 
 <hr>
+<a href=#FSD>Fictious Service Details</a>
+<a href=#AUTH>Firebase Auth</a>
+<hr>
 
-<h3>Fictitious Service Details</h3>
+<h2 id=FSD>Fictitious Service Details</h2>
 
-<img src="HOME.png" alt="Home image">
+<img src=HOME.png alt="Home image">
 
 <p>This service is purely fictitious and will not be developed or released in reality.
 Security must be carefully considered when developing this service.</p>
@@ -91,12 +98,12 @@ Security must be carefully considered when developing this service.</p>
 <hr>
 
 <p>I hope this article will be helpful for those who want to start their own membership-based online service using Firebase!</p>
-<p>The source code is available on <a href=https://github.com/Satachito/exp-fb>GitHub</a>. The dummy service is available at <a href=https://exp-fb-c223c.web.app/>https://exp-fb-c223c.web.app/</a>.
+<p>The source code is available on <a href=https://github.com/Satachito/exp-fb target=_blank>GitHub</a>. The dummy service is available at <a href=https://exp-fb-c223c.web.app/ target=_blank>https://exp-fb-c223c.web.app/</a>.
 <p>Please feel free to ask any questions you may have.</p>
 
 
 
-<h2>Firebase authentication</h2>
+<h2 id=AUTH>Firebase authentication</h2>
 
 <p>Firebase is a powerful platform that streamlines app development. However, it is currently in a state of flux, undergoing frequent version updates. The transition to v9, in particular, introduced a significant change with the introduction of the Modular API, which features a syntax that is vastly different from the traditional API.</p>
 
@@ -112,16 +119,19 @@ Security must be carefully considered when developing this service.</p>
 <h4>Implementing a Robust Login Solution</h4>
 <p>Considering this landscape, directly utilizing Firebase's features to implement login functionality emerges as the most viable option from a long-term perspective.</p>
 
-<img src="LOGIN_D.png" alt="Login dialog image">
+<img src=SS1.png alt="Login dialog image">
+<img src=SS2.png alt="Login dialog image">
+<img src=SS3.png alt="Login dialog image">
+<img src=SS4.png alt="Login dialog image">
 
 <p>By embracing the latest developments in Firebase and implementing login functionality directly, developers can ensure the longevity and adaptability of their applications.</p>
 
 Let's take a look at the code, the HTML and CSS are shown on CodePen. Javascript follows separately because firebase does not work in CodePen.
-A working version is available at <a src=https://techblog-e490f.web.app/Contents/FirebaseAuth.html>https://techblog-e490f.web.app/Contents/FirebaseAuth.html</a>
+A working version is available at <a src=https://tech.sat.tokyo/Contents/FirebaseAuth.html target=_blank>https://tech.sat.tokyo/Contents/FirebaseAuth.html</a>
 
-<p class="codepen" data-height="600" data-default-tab="html,result" data-slug-hash="RwOyxzr" data-user="satachito" style="height: 600px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+<p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="RwOyxzr" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
   <span>See the Pen <a href="https://codepen.io/satachito/pen/RwOyxzr">
-  Untitled</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
+  Firebase AUTH</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
@@ -133,7 +143,15 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js"
 const
 app = initializeApp(
-	//	Your setting here
+	{	apiKey				: "AIzaSyDWQvp05ky9-KqeQ6JjTVnB0uoJTdA6LK4"
+	,	authDomain			: "exp-fb-c223c.firebaseapp.com"
+	,	databaseURL			: "https://exp-fb-c223c-default-rtdb.asia-southeast1.firebasedatabase.app"
+	,	projectId			: "exp-fb-c223c"
+	,	storageBucket		: "exp-fb-c223c.appspot.com"
+	,	messagingSenderId	: "1046625556668"
+	,	appId				: "1:1046625556668:web:86e0b84397eb59b27018b9"
+	,	measurementId		: "G-NLBQYBPKPD"
+	}
 )
 
 import {
@@ -143,44 +161,50 @@ const
 analytics = getAnalytics( app )
 
 import {
-	connectAuthEmulator
-,	getAuth
+	getAuth
 ,	onAuthStateChanged
 ,	signInWithEmailAndPassword
 ,	signInWithPopup
+,	signInWithRedirect
+,	sendPasswordResetEmail
 ,	sendEmailVerification
 ,	createUserWithEmailAndPassword
 ,	GoogleAuthProvider
 ,	FacebookAuthProvider
 ,	GithubAuthProvider
 ,	signOut
+,	deleteUser
 } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js'
 const
 auth = getAuth( app )
 
-location.hostname === 'localhost' && connectAuthEmulator( auth, 'http://localhost:9099' )
-
 const
 E = _ => document.getElementById( _ )
 
-E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GoogleAuthProvider		() ).catch( er => alert( er.message ) )
-E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithPopup( auth, new FacebookAuthProvider	() ).catch( er => alert( er.message ) )
-E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithPopup( auth, new GithubAuthProvider		() ).catch( er => alert( er.message ) )
+E( 'GOOGLE_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GoogleAuthProvider		() )
+E( 'FACEBOOK_LOGIN_B'	).onclick = () => signInWithRedirect( auth, new FacebookAuthProvider	() )
+E( 'GITHUB_LOGIN_B'		).onclick = () => signInWithRedirect( auth, new GithubAuthProvider		() )
 
-E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
-E( 'REGISTER_EMAIL_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value ).catch( er => alert( er.message ) )
+E( 'EMAIL_LOGIN_B'		).onclick = () => signInWithEmailAndPassword		( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value	).catch( er => alert( er.message ) )
+E( 'CREATE_ACCOUNT_B'	).onclick = () => createUserWithEmailAndPassword	( auth, E( 'EMAIL_I' ).value, E( 'PASSWORD_I' ).value	).catch( er => alert( er.message ) )
+
+E( 'RESET_PASSWORD_B'	).onclick = () => sendPasswordResetEmail( auth, E( 'EMAIL_I' ).value ).then( () => alert( 'Password reset mail sent' ) ).catch( er => alert( er.message ) )
+
+E( 'LOGOUT_B'			).onclick = () => signOut( auth )
+E( 'DELETE_ACCOUNT_B'	).onclick = () => deleteUser( auth.currentUser )
 
 onAuthStateChanged(
 	auth
 ,	user => (
 		E( 'LOGIN_D' ).close()
+	,	E( 'MY_D' ).close()
 	,	user
-		?	(	user.emailVerified || (		//	see (A):
+		?	(	user.emailVerified || (
 					sendEmailVerification( user ).then( () => alert( 'A confirmation email has been sent to the address provided. Kindly click the link within the email to confirm delivery.' ) )
 				,	signOut( auth )
 				)
-			,	E( 'USER_B' ).textContent	= 'Sign out: ' + user.email
-			,	E( 'USER_B' ).onclick		= () => signOut( auth ).then( () => alert( user.email + ': Signed out' ) )
+			,	E( 'USER_B' ).textContent	= 'MyPage: ' + user.email
+			,	E( 'USER_B' ).onclick		= () => E( 'MY_D' ).showModal()
 			)
 		:	(	E( 'USER_B' ).textContent	= 'Sign in/up'
 			,	E( 'USER_B' ).onclick		= () => E( 'LOGIN_D' ).showModal()
