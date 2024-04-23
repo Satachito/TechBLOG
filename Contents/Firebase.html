@@ -45,9 +45,61 @@ img {
 <p>In this article, I will explain the specific steps for starting a membership-based online service as an individual using Firebase, while creating a fictitious service with slightly relaxed security as an example.</p>
 
 <hr>
+
+<h3>Fictitious service specification</h3>
+
+<img src=HOME.png alt="Home image">
+
+<h4>Concept:</h4>
+<ul>
+<li>Type: Investment information portal</li>
+<li>Revenue model: Advertising revenue and newsletter subscriptions</li>
+</ul>
+
+<h4>Functional requirements:</h4>
+<ul>
+	<li>User registration and login</li>
+	<li>Content management</li>
+	<li>Payment processing</li>
+	<li>External API integration:
+		<ul>
+			<li>Various market data APIs</li>
+			<li>Scraping</li>
+		</ul>
+	</li>
+	<li>Single-page application (SPA)</li>
+</ul>
+
+<h4>Security requirements:</h4>
+<ul>
+	<li>Only email addresses stored</li>
+	<li>No personal information collected</li>
+</ul>
+
+<h4>Technical requirements:</h4>
+<ul>
+	<li>Frontend: Vanilla JS</li>
+	<li>Backend: Firebase</li>
+	<li>Database: Firebase Firestore</li>
+	<li>Authentication: Firebase Authentication</li>
+	<li>Payment processing: Stripe</li>
+	<li>External APIs:
+		<ul>
+			<li>Cryptocurrency exchanges</li>
+			<li>Precios metals dealers</li>
+		</ul>
+	</li>
+</ul>
+
+<p>The source code is available on <a href=https://github.com/Satachito/exp-fb target=_blank>GitHub</a> and service is available at <a href=https://exp-fb-c223c.web.app/ target=_blank>https://exp-fb-c223c.web.app/</a>.
+
+<hr>
+
 <h3>Table of contents:</h3>
 <ul>
-	<li><a href=#AUTH>Firebase authentication</a></li>
+	<li><a href=#AUTH>Firebase Authentication</a></li>
+	<li><a href=#FUNC>Firebase Firestore</a></li>
+	<li><a href=#FUNC>Firebase Functions</a></li>
 	<li><a href=#SPA_ROUTER>SPA and Router</a>
 		<ul>
 			<li><a href=#SPA>SPA</a></li>
@@ -55,9 +107,133 @@ img {
 		</ul>
 	</li>
 </ul>
-<hr>
 
-<h2 id=AUTH>Firebase authentication</h2>
+<hr>
+<h2 id=FUNC>Firebase Firestore</h2>
+
+Firestore is a NoSQL database that is accessible from both web clients and server-side applications.
+
+<h3>Firestore's features</h3>
+<ul>
+	<li><b>NoSQL document database:</b> Firestore is a NoSQL document database, which means that it stores data in JSON-like documents. This makes it a good choice for storing unstructured data, such as user profiles, product data, and chat messages.</li>
+	<li><b>Real-time updates:</b> Firestore supports real-time updates, which means that clients can be notified of changes to data as they happen. This makes it a good choice for building real-time applications, such as chat apps, social media apps, and gaming apps.</li>
+	<li><b>Scalable and secure:</b> Firestore is a highly scalable and secure database that is backed by Google's infrastructure. This means that it can handle a large number of users and requests, and that your data is safe.</li>
+	<li><b>Easy to use:</b> Firestore is easy to use and has a well-documented API. There are also a number of client libraries available, making it easy to develop applications for Firestore in a variety of programming languages.</li>
+</ul>
+
+
+<hr>
+<h2 id=FUNC>Firebase Functions</h2>
+
+<h3>Connecting External APIs in a Fictional Service</h3>
+<p>In our fictional service, connecting with external APIs is crucial for functionality. However, directly connecting a client-side (web) application to external APIs presents security challenges. To overcome these hurdles, a backend service plays a vital role.</p>
+
+<h3>Why a Backend Service is Essential:</h3>
+<ul>
+	<li><b>Same-Origin Policy:</b> Web browsers enforce a security measure called the same-origin policy. This restricts communication between a web page and resources from a different domain than the one that served the page. Direct client-side access to external APIs would violate this policy.</li>
+	<li><b>Access Token Security:</b> External APIs often require authentication using access tokens. These tokens grant access to sensitive data or functionalities and should never be exposed to the client-side for security reasons. A backend service can securely store and manage these tokens.</li>
+</ul>
+
+<h3>Benefits of a Backend Service:</h3>
+<ul>
+	<li><b>Security:</b> The backend acts as a secure intermediary, shielding sensitive information like access tokens from the client-side.</li>
+	<li><b>Flexibility:</b> The backend can handle API calls regardless of specific protocols (e.g., REST) or authentication mechanisms (e.g., OAuth). It can adapt to different external APIs as needed.</li>
+	<li><b>Scalability:</b> The backend service can be designed to handle a high volume of API requests, ensuring performance and reliability for the client-side application.</li>
+	<li><b>Periodic execution:</b>Certain functionalities may necessitate periodic processing. For instance, in this hypothetical service, fetching gold prices once a day might suffice. When scraping data, it is crucial to exercise caution to avoid overburdening the target website.</li>
+</ul>
+
+<h3>Let's look at an actual example:<h3>
+
+<pre><code>functions/index.js
+const admin = require( 'firebase-admin' )	
+admin.initializeApp()
+
+
+const { onRequest	} = require( 'firebase-functions/v2/https'		)
+
+exports.ticker = onRequest(
+	( q, s ) => fetch( 'https://example.com/ticker' ).then(
+		r => {
+			if ( !r.ok ) throw new Error( r.statusText )
+			return r.json()
+		}
+	).then(
+		j => send( j )
+	)
+)
+
+
+const { onSchedule	} = require( 'firebase-functions/v2/scheduler'	)
+
+exports.perDay	= onSchedule(
+	'0 0 * * *'
+,	_ => FetchTEXT( 'https://example.com/metals' ).then(
+		_ => fs.collection( 'mmc' ).doc( String( Math.floor( Date.now() / ( 1000 * 60 * 60 * 24 ) ) ) ).set(
+			{ html: _ }
+		)
+	).catch(
+		error
+	)
+)
+
+</code></pre>
+
+
+
+
+
+
+APIがアクセストークンを必要とする場合、ソースコード中にアクセストークンをハードコードすると、漏洩の可能性が出てきます。
+例えばソースコードを公開レポジトリにおくと、そこからアクセストークンが漏洩します。
+そのような場合は Google Secret Manager を使うとアクセストークンを隠蔽できます。これは Firebase の機能ではありませんが、Firebase は現在 Google に統合されているので、
+Firebase からシームレスに SecreteManager を使うことができます。
+
+
+
+
+
+
+
+<h3>Benefits of Firebase Functions:</h3>
+
+<ul>
+<li><b>Serverless architecture:</b> Firebase Functions are serverless, meaning you don't need to provision or manage servers. This makes them a cost-effective and scalable solution for running code in the cloud.</li>
+<li><b>Event-driven:</b> Firebase Functions are event-driven, which means they are triggered by events such as changes to a database, file uploads, or HTTP requests. This makes them ideal for building real-time and reactive applications.</li>
+<li><b>Scalable:</b> Firebase Functions automatically scale up or down based on demand, so you never have to worry about running out of capacity.</li>
+<li><b>Pay-per-use:</b> You only pay for the resources that your Firebase Functions use, so you don't have to worry about upfront costs or idle resources.</li>
+<li><b>Easy to use:</b> Firebase Functions are easy to develop and deploy using Node.js, JavaScript, or Python. You can also use Firebase CLI to manage your functions from the command line.</li>
+<li><b>Integrated with Firebase:</b> Firebase Functions are tightly integrated with other Firebase services, such as Firestore, Realtime Database, and Authentication. This makes it easy to build and deploy cloud-native applications with Firebase.</li>
+</ul>
+<h3>Typical Use Cases of Firebase Functions:</h3>
+<ul>
+<li><b>Real-time data processing:</b> Process data in real time as it is added to a Firestore or Realtime Database.</li>
+<li><b>Background tasks:</b> Perform background tasks, such as sending emails, generating reports, or processing images, without blocking the user interface.</li>
+<li><b>API endpoints:</b> Create API endpoints to serve data or perform actions on behalf of your app.</li>
+<li><b>Webhooks:</b> Handle webhooks from third-party services.</li>
+<li><b>Authentication and authorization:</b> Implement custom authentication and authorization logic.</li>
+<li><b>Triggering workflows:</b> Trigger workflows in response to events, such as user actions or changes to data.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3></h3>
+<ul>
+	<li><b></b></li>
+	<li><b></b></li>
+</ul>
+
+<hr>
+<h2 id=AUTH>Firebase Authentication</h2>
 
 <p>Firebase is a powerful platform that streamlines app development. However, it is currently in a state of flux, undergoing frequent version updates. The transition to v9, in particular, introduced a significant change with the introduction of the Modular API, which features a syntax that is vastly different from the traditional API.</p>
 
@@ -199,56 +375,8 @@ onAuthStateChanged(
 <p>However, the Firebase Auth Emulator does not have this feature, so you need to deploy and debug the authentication functionality thoroughly.</p>
 
 
-<h2 id=SPA_ROUTER>SPA and Router</h2>
-
-To illustrate this chapter, we will assume the existence of the following fictional services.
-
-<img src=HOME.png alt="Home image">
-
-<h4>Concept:</h4>
-<ul>
-<li>Type: Investment information portal</li>
-<li>Revenue model: Advertising revenue and newsletter subscriptions</li>
-</ul>
-
-<h4>Functional requirements:</h4>
-<ul>
-	<li>User registration and login</li>
-	<li>Content management</li>
-	<li>Payment processing</li>
-	<li>External API integration:
-		<ul>
-			<li>Various market data APIs</li>
-			<li>Scraping</li>
-		</ul>
-	</li>
-	<li>Single-page application (SPA)</li>
-</ul>
-
-<h4>Security requirements:</h4>
-<ul>
-	<li>Only email addresses stored</li>
-	<li>No personal information collected</li>
-</ul>
-
-<h4>Technical requirements:</h4>
-<ul>
-	<li>Frontend: Vanilla JS</li>
-	<li>Backend: Firebase</li>
-	<li>Database: Firebase Firestore</li>
-	<li>Authentication: Firebase Authentication</li>
-	<li>Payment processing: Stripe</li>
-	<li>External APIs:
-		<ul>
-			<li>Cryptocurrency exchanges</li>
-			<li>Precios metals dealers</li>
-		</ul>
-	</li>
-</ul>
-
 <hr>
-
-<p>The source code is available on <a href=https://github.com/Satachito/exp-fb target=_blank>GitHub</a>. The dummy service is available at <a href=https://exp-fb-c223c.web.app/ target=_blank>https://exp-fb-c223c.web.app/</a>.
+<h2 id=SPA_ROUTER>SPA and Router</h2>
 
 <h3 id=SPA>SPA</h3>
 
@@ -293,31 +421,28 @@ To illustrate this chapter, we will assume the existence of the following fictio
 <p><b>Here is a more detailed explanation:</b></p>
 
 <ul>
-<li>In a traditional web application, each URL is associated with a specific file or resource on the server. When a user visits a URL, the server sends the corresponding file or resource to the user's browser.</li>
-<li>In an SPA, there is only one HTML page (<code>/index.html</code>). This page contains all of the JavaScript code that is needed to run the application.</li>
-<li>When a user visits a URL, the server returns the <code>/index.html</code> page to the user's browser. The JavaScript code in <code>/index.html</code> then takes over and dynamically generates the content of the page based on the URL that was visited.</li>
+	<li>In a traditional web application, each URL is associated with a specific file or resource on the server. When a user visits a URL, the server sends the corresponding file or resource to the user's browser.</li>
+	<li>In an SPA, there is only one HTML page (<code>/index.html</code>). This page contains all of the JavaScript code that is needed to run the application.</li>
+	<li>When a user visits a URL, the server returns the <code>/index.html</code> page to the user's browser. The JavaScript code in <code>/index.html</code> then takes over and dynamically generates the content of the page based on the URL that was visited.</li>
 
-<li>In order for this to work on Firebase Hosting, you would specify rewrite rules into firebase.json fire in the root directory of your project.</li>
+	<li>In order for this to work on Firebase Hosting, you would specify rewrite rules into firebase.json fire in the root directory of your project.</li>
+</ul>
+
 <pre><code>
-{
-  ...
-  "hosting": {
-  	...
-    "rewrites": [
-      { "source": "/stock", "destination": "/index.html" },
-      { "source": "/fx", "destination": "/index.html" },
-      { "source": "/metal", "destination": "/index.html" },
-      { "source": "/crypto", "destination": "/index.html" }
-    ]
-  }
-  ...
+{	...
+	"hosting": {
+		...
+		"rewrites": [
+			{ "source": "**", "destination": "/index.html" }
+		]
+	}
 }
 </code></pre>
-<li>This can be also done using a variety of methods, such as Apache's mod_rewrite or Nginx's rewrite module.</li>
 
-
-<li>Once the server is configured to rewrite requests, the <code>/index.html</code> page can use JavaScript to determine what to display based on the URL that was visited. For example, if the user visits <code>/stock</code>, the <code>/index.html</code> page could display a stock ticker. If the user visits <code>/fx</code>, the <code>/index.html</code> page could display a currency exchange rate chart.</li>
-<li>SPAs have a number of advantages over traditional web applications. They can provide a more responsive and user-friendly experience, and they can be easier to develop and maintain. However, they also require more careful consideration of server configuration.</li>
+<ul>
+	<li>This can be also done using a variety of methods, such as Apache's mod_rewrite or Nginx's rewrite module.</li>
+	<li>Once the server is configured to rewrite requests, the <code>/index.html</code> page can use JavaScript to determine what to display based on the URL that was visited. For example, if the user visits <code>/stock</code>, the <code>/index.html</code> page could display a stock ticker. If the user visits <code>/fx</code>, the <code>/index.html</code> page could display a currency exchange rate chart.</li>
+	<li>SPAs have a number of advantages over traditional web applications. They can provide a more responsive and user-friendly experience, and they can be easier to develop and maintain. However, they also require more careful consideration of server configuration.</li>
 </ul>
 
 
@@ -345,22 +470,25 @@ To illustrate this chapter, we will assume the existence of the following fictio
 
 <h5>Advantages:</h5>
 <ul>
-<li>Clean URLs that appear in the address bar</li>
-<li>Improved SEO and bookmarking capabilities</li>
-<li>Supports browser history features like back and forward buttons</li>
+	<li>Clean URLs that appear in the address bar</li>
+	<li>Improved SEO and bookmarking capabilities</li>
+	<li>Supports browser history features like back and forward buttons</li>
 </ul>
 
 <h5>Disadvantages:</h5>
-<li>Slightly more complex implementation compared to hash-based routing</li>
+<ul>
+	<li>Slightly more complex implementation compared to hash-based routing</li>
+</ul>
 
 <h4>Sample code(Vanilla JS)</h4>
 
 <p>While frameworks like Vue and React offer convenient routing solutions, Vanilla JavaScript routing provides a unique set of advantages, including enhanced flexibility, extensibility, and a deeper understanding of routing concepts.</p>
 
 <h5>Working sample</h5>
-<a href=https://vanillarouterdemo.web.app/ target=_blank>https://vanillarouterdemo.web.app/</a>
+<p><a href=https://vanillarouterdemo.web.app/ target=_blank>https://vanillarouterdemo.web.app/</a></p>
+The browser history functionality is available for use there.
 
-<h5>Code Pen</h5>
+<h5>Source code(CodePen)</h5>
 <p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="LYpEXPY" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
   <span>See the Pen <a href="https://codepen.io/satachito/pen/LYpEXPY">
   Router</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
