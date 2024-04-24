@@ -1,0 +1,73 @@
+<hr>
+<h2 id=AUTH>Firebase Authentication</h2>
+
+<p>Firebase is a powerful platform that streamlines app development. However, it is currently in a state of flux, undergoing frequent version updates. The transition to v9, in particular, introduced a significant change with the introduction of the Modular API, which features a syntax that is vastly different from the traditional API.</p>
+
+<h4>Migrating to the Modular API</h4>
+<p>While the Modular API enables more flexible and efficient development, it breaks compatibility with legacy code. The Firebase team provides compat versions to maintain compatibility with past code, but the migration to the Modular API is recommended for the future.</p>
+
+<h4>Firebase-UI and the Modular API</h4>
+<p>Firebase includes Firebase-UI, an open-source UI library that simplifies the implementation of login functionality and more. However, Firebase-UI does not currently support the Modular API, and the migration process is expected to be time-consuming.</p>
+
+<h4>Adapting to the Future</h4>
+<p>Firebase will continue to evolve, and even more significant changes may be introduced in the future.</p>
+
+<h4>Implementing a Robust Login Solution</h4>
+<p>Considering this landscape, directly utilizing Firebase's features to implement login functionality emerges as the most viable option from a long-term perspective.</p>
+
+<img src=SS1.png alt="Login dialog image">
+<img src=SS2.png alt="Login dialog image">
+<img src=SS3.png alt="Login dialog image">
+<img src=SS4.png alt="Login dialog image">
+
+<p>By embracing the latest developments in Firebase and implementing login functionality directly, developers can ensure the longevity and adaptability of their applications.</p>
+
+Let's take a look at the code, the HTML and CSS are shown on CodePen. Javascript follows separately because firebase does not work in CodePen.
+A working version is available at <a href=https://tech.sat.tokyo/Contents/FirebaseAuth.html target=_blank>https://tech.sat.tokyo/Contents/FirebaseAuth.html</a>
+
+<p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="RwOyxzr" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/satachito/pen/RwOyxzr">
+  Firebase AUTH</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+
+<p>If a user creates an account using <code>createUserWithEmailAndPassword</code>, <code>signInWithPopup</code> or <code>signInWithRedirect</code>, the user's email may not yet be verified.
+(The email address is automatically verified only when using <code>GoogleAuthProvider</code>)</p>
+<p>The user object in auth will not reflect that the email has been verified until the user logs in again, so <code>signOut</code> is one way to do it here.</p>
+
+
+<h3>FYI: About Email Enumeration Protection in Firebase</h3>
+
+<h4>Enhanced Security Against Credential Stuffing Attacks</h4>
+
+<p>Since September 2023, Firebase has introduced the Email Enumeration Protection feature for its login functionality. This feature, also known as Email Address Enumeration Defense, neutralizes traditional attack methods and enhances user security.
+
+<h4>What is Email Address Enumeration Attack?</h4>
+
+<p>In traditional login systems, attackers attempt to log in to a target service with various email addresses and random passwords. If the error message "Email address is not registered" appears, the attacker can determine that the address is not registered. On the other hand, if the message "Incorrect password" is displayed, the attacker can confirm that the address is registered.</p>
+
+<h4>How Email Enumeration Protection Works</h4>
+
+<p>When the Email Enumeration Protection feature is enabled, all login attempts, regardless of the password, will result in the error message "Invalid credentials". This prevents attackers from determining whether an email address is registered, effectively thwarting email address enumeration attacks.</p>
+
+<h4>Affected Methods</h4>
+
+<p>The following methods are affected by enabling Email Enumeration Protection:
+
+<ul>
+	<li><code>signInWithEmailAndPassword</code></li>
+	<li><code>fetchSignInMethodsForEmail</code></li>
+	<li><code>sendPasswordResetEmail</code></li>
+</ul>
+<p>The <code>fetchSignInMethodsForEmail</code> function returns empty array.</p>
+<p>The <code>sendPasswordResetEmail</code> is a function that sends a password reset email to a user. When this feature is enabled, no error will occur even for non-existent email addresses. This is because sending an email to a non-existent address is pointless, and the error message could reveal the existence of the address.</p>
+
+
+<h4>Assumptions in this Article</h4>
+
+<p>This article assumes that the Email Enumeration Protection feature is enabled.</p>
+<p>However, the Firebase Auth Emulator does not have this feature, so you need to deploy and debug the authentication functionality thoroughly.</p>
+
+

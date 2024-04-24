@@ -1,0 +1,42 @@
+<hr>
+<h2 id="AUTH">Firebase Authentication</h2>
+<p>Firebase is a powerful platform that facilitates app development. However, it's currently undergoing frequent updates, notably transitioning to v9, which introduces the Modular API. This new API significantly alters the syntax from the traditional one.</p>
+<h4>Migrating to the Modular API</h4>
+<p>While the Modular API offers enhanced flexibility and efficiency, it breaks compatibility with legacy code. Although compat versions are provided by the Firebase team, migrating to the Modular API is recommended for future-proofing your projects.</p>
+<h4>Firebase-UI and the Modular API</h4>
+<p>Firebase includes Firebase-UI, a handy UI library for implementing features like login. However, Firebase-UI doesn't support the Modular API yet, necessitating a potentially time-consuming migration process.</p>
+<h4>Adapting to Future Changes</h4>
+<p>Given Firebase's ongoing evolution, anticipate further significant changes in the future.</p>
+<h4>Implementing a Secure Login Solution</h4>
+<p>Considering this evolving landscape, directly utilizing Firebase's features to implement login functionality emerges as the most sustainable approach.</p>
+<img src="SS1.png" alt="Login dialog image">
+<img src="SS2.png" alt="Login dialog image">
+<img src="SS3.png" alt="Login dialog image">
+<img src="SS4.png" alt="Login dialog image">
+<p>By embracing the latest Firebase developments and implementing login functionality directly, developers can ensure their applications' longevity and adaptability.</p>
+<p>For the code, HTML and CSS are provided on CodePen. JavaScript follows separately since Firebase doesn't function within CodePen. You can view a working version <a href="https://tech.sat.tokyo/Contents/FirebaseAuth.html" target="_blank">here</a>.</p>
+<p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="RwOyxzr" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/satachito/pen/RwOyxzr">
+  Firebase AUTH</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+<p>If a user creates an account using <code>createUserWithEmailAndPassword</code>, <code>signInWithPopup</code>, or <code>signInWithRedirect</code>, the email may not be verified immediately (except when using <code>GoogleAuthProvider</code>).</p>
+<p>The <code>signOut</code> method can be used to reflect email verification status changes in the auth user object, as it requires the user to log in again.</p>
+<h3>FYI: About Email Enumeration Protection in Firebase</h3>
+<h4>Enhanced Security Against Credential Stuffing Attacks</h4>
+<p>Since September 2023, Firebase has introduced Email Enumeration Protection, a feature that fortifies login functionality against traditional attacks, enhancing user security.</p>
+<h4>Email Address Enumeration Attack</h4>
+<p>In traditional login systems, attackers try various email addresses with random passwords. By analyzing error messages, they can discern whether an email address is registered, thus exploiting the system's vulnerabilities.</p>
+<h4>How Email Enumeration Protection Works</h4>
+<p>This feature ensures that all login attempts, regardless of password accuracy, return a generic "Invalid credentials" message. Consequently, attackers cannot determine email address validity solely based on error responses, mitigating enumeration attacks.</p>
+<h4>Affected Methods</h4>
+<p>The following methods are affected by Email Enumeration Protection:
+<ul>
+	<li><code>signInWithEmailAndPassword</code></li>
+	<li><code>fetchSignInMethodsForEmail</code></li>
+	<li><code>sendPasswordResetEmail</code></li>
+</ul>
+<p>When enabled, <code>fetchSignInMethodsForEmail</code> returns an empty array, and <code>sendPasswordResetEmail</code> shows no error for non-existent email addresses to avoid revealing address existence.</p>
+<h4>Assumptions in this Article</h4>
+<p>This article assumes Email Enumeration Protection is enabled. However, note that the Firebase Auth Emulator does not support this feature, necessitating thorough deployment and debugging for authentication functionality.</p>

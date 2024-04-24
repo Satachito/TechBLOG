@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start a membership service with Firebase</title>
+
+<style>
+body {
+;	max-width			: 640px
+}
+pre {
+;	background-color	: black
+;	padding				: 12px
+;	overflow			: scroll
+;	tab-size			: 4
+}
+code {
+;	color				: blue
+}
+pre > code {
+;	color				: yellow
+}
+img {
+;	max-width			: 320px
+}
+</style>
+</head>
+
+<body>
+
+
+
+<h2>Start a membership online service with Firebase</h2>
+
+
+<p>In recent years, the development of cloud services has created an environment where individuals can easily start their own membership-based online services.</p>
+
+<p>In particular, using a Backend as a Service (BaaS) like Firebase allows developers to greatly simplify the complex process of building a backend. </p>
+
+<p>Firebase provides many of the features needed to build an online service, such as authentication, database, file storage, and serverless functions, allowing developers to focus on the core functionality of their service.</p>
+
+<p>Firebase also automatically scales with service growth, which can significantly reduce operational costs.</p>
+
+<p>In this article, I will explain the specific steps for starting a membership-based online service as an individual using Firebase, while creating a fictitious service with slightly relaxed security as an example.</p>
+
+<hr>
+
+<h3>Fictitious service specification</h3>
+
+<img src=HOME.png alt="Home image">
+
+<h4>Concept:</h4>
+<ul>
+<li>Type: Investment information portal</li>
+<li>Revenue model: Advertising revenue and newsletter subscriptions</li>
+</ul>
+
+<h4>Functional requirements:</h4>
+<ul>
+	<li>User registration and login</li>
+	<li>Content management</li>
+	<li>Payment processing</li>
+	<li>External API integration:
+		<ul>
+			<li>Various market data APIs</li>
+			<li>Scraping</li>
+		</ul>
+	</li>
+	<li>Single-page application (SPA)</li>
+</ul>
+
+<h4>Security requirements:</h4>
+<ul>
+	<li>Only email addresses stored</li>
+	<li>No personal information collected</li>
+</ul>
+
+<h4>Technical requirements:</h4>
+<ul>
+	<li>Frontend: Vanilla JS</li>
+	<li>Backend: Firebase</li>
+	<li>Database: Firebase Firestore</li>
+	<li>Authentication: Firebase Authentication</li>
+	<li>Payment processing: Stripe</li>
+	<li>External APIs:
+		<ul>
+			<li>Cryptocurrency exchanges</li>
+			<li>Precios metals dealers</li>
+		</ul>
+	</li>
+</ul>
+
+<p>The source code is available on <a href=https://github.com/Satachito/exp-fb target=_blank>GitHub</a> and service is available at <a href=https://exp-fb-c223c.web.app/ target=_blank>https://exp-fb-c223c.web.app/</a>.
+
+<hr>
+
+<h3>Table of contents:</h3>
+<ul>
+	<li><a href=#AUTH		>Firebase Authentication</a></li>
+	<li><a href=#STORE		>Firebase Firestore		</a></li>
+	<li><a href=#FUNC		>Firebase Functions		</a></li>
+	<li><a href=#SPA_ROUTER	>SPA and Router			</a>
+		<ul>
+			<li><a href=#SPA>SPA</a></li>
+			<li><a href=#ROUTER>ROUTER</a></li>
+		</ul>
+	</li>
+</ul>
+

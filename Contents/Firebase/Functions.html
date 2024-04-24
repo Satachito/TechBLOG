@@ -1,0 +1,164 @@
+<hr>
+<h2 id=FUNC>Firebase Functions</h2>
+
+<h3>Connecting External APIs in a Fictional Service</h3>
+<p>In our fictional service, connecting with external APIs is crucial for functionality. However, directly connecting a client-side (web) application to external APIs presents security challenges. To overcome these hurdles, a backend service plays a vital role.</p>
+
+<h3>Why a Backend Service is Essential:</h3>
+<ul>
+	<li><b>Same-Origin Policy:</b> Web browsers enforce a security measure called the same-origin policy. This restricts communication between a web page and resources from a different domain than the one that served the page. Direct client-side access to external APIs would violate this policy.</li>
+	<li><b>Access Token Security:</b> External APIs often require authentication using access tokens. These tokens grant access to sensitive data or functionalities and should never be exposed to the client-side for security reasons. A backend service can securely store and manage these tokens.</li>
+</ul>
+
+<h3>Benefits of a Backend Service:</h3>
+<ul>
+	<li><b>Security:</b> The backend acts as a secure intermediary, shielding sensitive information like access tokens from the client-side.</li>
+	<li><b>Flexibility:</b> The backend can handle API calls regardless of specific protocols (e.g., REST) or authentication mechanisms (e.g., OAuth). It can adapt to different external APIs as needed.</li>
+	<li><b>Scalability:</b> The backend service can be designed to handle a high volume of API requests, ensuring performance and reliability for the client-side application.</li>
+	<li><b>Periodic execution:</b>Certain functionalities may necessitate periodic processing. For instance, in this hypothetical service, fetching gold prices once a day might suffice. When scraping data, it is crucial to exercise caution to avoid overburdening the target website.</li>
+</ul>
+
+<h3>Let's look at an actual example:</h3>
+
+まずは最もシンプルなプロクシです。
+
+<p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="VwNgpXj" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/satachito/pen/VwNgpXj">
+  Firebase Functions 1</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+これで動作しますが、2つの大きな問題があります。
+
+まずは、この API が世界中のどこからでもアクセスできてしまうことです。
+これを避ける方法はいくつかありますが、最も安全な Web 側で Firebase Authenticate を使って ユーザー情報を含む Token を作成して、
+Authorization ヘッダーにセットして、Functions の中で Authorization ヘッダーから Token を取り出して verify する方法です。
+
+Web側は以下のようなコードになります。
+
+<pre><code>Web 側
+const
+app = initializeApp	(
+//	Your configuration here
+)
+const
+auth = getAuth( app )
+
+getIdToken( auth.currentUser, true ).then(
+	token => {
+		fetch(
+			'https://......./ticker'
+		,	{ headers: { 'Authorization': 'Bearer ' + token } }
+		).then(
+			r => {
+				if ( !r.ok ) throw new Error( r.statusText )
+				return r.json()
+			}
+		).then(
+			_ => // Do something with JavaScript Object
+		).catch(
+			_ => alert( _.message )
+		)
+	}
+)
+</code></pre>
+
+
+<pre><code>Functions側
+	( q, s ) => admin.auth().verifyIdToken( q.headers.authorization.split( 'Bearer ' )[ 1 ] ).then(
+		user => fetch( 'https://example.com/ticker' ).then(
+			r => {
+				if ( !r.ok ) throw new Error( r.statusText )
+				return r.json()
+			}
+		).then(
+			j => send( j )
+		)
+	)
+</code></pre>
+
+
+
+
+まずはWeb からアクセスすると Same Origin Policyに引っ掛かります。
+これを回避するためには onRequest の中にCORS (オリジン間リソース共有、 Cross-Origin Resource Sharing)用のコードをインプリします。
+
+<pre><code>functions/index.js
+	( q, s ) => (
+		s.set( 'Access-Control-Allow-Origin', '*' )
+	,	q.method === 'OPTIONS'
+		?	(	s.set( 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization' )
+			,	s.set( 'Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE' )
+			,	s.status( 200 ).end()
+			)
+		:	fetch( 'https://example.com/ticker' ).then(
+				r => {
+					if ( !r.ok ) throw new Error( r.statusText )
+					return r.json()
+				}
+			).then(
+				j => send( j )
+			)
+		;
+	)
+</code></pre>
+
+
+
+<pre><code>
+const admin				= require( 'firebase-admin' )
+admin.initializeApp()
+
+const { onSchedule }	= require( 'firebase-functions/v2/scheduler' )
+exports.perDay			= onSchedule(
+	'0 0 * * *'
+,	_ => fetch( 'https://example.com/metals.html' ).then(
+		r => {
+			if ( !r.ok ) throw new Error( r.statusText )
+			return r.text()
+		}
+	).thcn(
+		html => fs.collection( 'mmc' ).doc( String( Math.floor( Date.now() / ( 1000 * 60 * 60 * 24 ) ) ) ).set(
+			{ html }
+		)
+	)
+)
+
+</code></pre>
+
+
+
+
+
+
+APIがアクセストークンを必要とする場合、ソースコード中にアクセストークンをハードコードすると、漏洩の可能性が出てきます。
+例えばソースコードを公開レポジトリにおくと、そこからアクセストークンが漏洩します。
+そのような場合は Google Secret Manager を使うとアクセストークンを隠蔽できます。これは Firebase の機能ではありませんが、Firebase は現在 Google に統合されているので、
+Firebase からシームレスに SecreteManager を使うことができます。
+
+
+
+
+
+
+
+<h3>Benefits of Firebase Functions:</h3>
+
+<ul>
+<li><b>Serverless architecture:</b> Firebase Functions are serverless, meaning you don't need to provision or manage servers. This makes them a cost-effective and scalable solution for running code in the cloud.</li>
+<li><b>Event-driven:</b> Firebase Functions are event-driven, which means they are triggered by events such as changes to a database, file uploads, or HTTP requests. This makes them ideal for building real-time and reactive applications.</li>
+<li><b>Scalable:</b> Firebase Functions automatically scale up or down based on demand, so you never have to worry about running out of capacity.</li>
+<li><b>Pay-per-use:</b> You only pay for the resources that your Firebase Functions use, so you don't have to worry about upfront costs or idle resources.</li>
+<li><b>Easy to use:</b> Firebase Functions are easy to develop and deploy using Node.js, JavaScript, or Python. You can also use Firebase CLI to manage your functions from the command line.</li>
+<li><b>Integrated with Firebase:</b> Firebase Functions are tightly integrated with other Firebase services, such as Firestore, Realtime Database, and Authentication. This makes it easy to build and deploy cloud-native applications with Firebase.</li>
+</ul>
+<h3>Typical Use Cases of Firebase Functions:</h3>
+<ul>
+<li><b>Real-time data processing:</b> Process data in real time as it is added to a Firestore or Realtime Database.</li>
+<li><b>Background tasks:</b> Perform background tasks, such as sending emails, generating reports, or processing images, without blocking the user interface.</li>
+<li><b>API endpoints:</b> Create API endpoints to serve data or perform actions on behalf of your app.</li>
+<li><b>Webhooks:</b> Handle webhooks from third-party services.</li>
+<li><b>Authentication and authorization:</b> Implement custom authentication and authorization logic.</li>
+<li><b>Triggering workflows:</b> Trigger workflows in response to events, such as user actions or changes to data.</li>
+</ul>
