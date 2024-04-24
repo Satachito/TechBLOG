@@ -81,9 +81,8 @@ Firebaseはアプリ開発を容易にする強力なプラットフォームで
 
 <img src=Contents/SS4.png alt="マイページ" width=320></img>
 
-<p class="codepen" data-height="300" data-default-tab="html" data-slug-hash="RwOyxzr" data-user="satachito" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-  <span>See the Pen <a href="https://codepen.io/satachito/pen/RwOyxzr">
+<iframe height="300" style="width: 100%;" scrolling="no" title="Firebase AUTH" src="https://codepen.io/satachito/embed/RwOyxzr?default-tab=html" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href="https://codepen.io/satachito/pen/RwOyxzr">
   Firebase AUTH</a> by Satachito (<a href="https://codepen.io/satachito">@satachito</a>)
-  on <a href="https://codepen.io">CodePen</a>.</span>
-</p>
-<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
