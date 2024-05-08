@@ -2,7 +2,7 @@
 <html lang=en>
 <head>
 
-<title>Router</title>
+<title>Vanilla Router</title>
 
 <template id=T_HOME	><h1>HOME PAGE		</h1></template>
 <template id=T_404	><h1>Page Not found	</h1></template>
@@ -18,54 +18,33 @@
 
 <main id=MAIN></main>
 
-
-
 <script type=module>
 
 import	JPTable from './jp-table.js'
 
-const
-Hash		= () => decodeURIComponent( location.hash.slice( 1 ) )
+const	Hash		= () => decodeURIComponent( location.hash.slice( 1 ) )
 
-const
-C			= $ => document.createElement( $ )
-const
-E			= $ => document.getElementById( $ )
-const
-AC			= $ => E( 'MAIN' ).appendChild( $ )
-const
-Clone		= $ => AC( E( $ ).content.cloneNode( true ) )
-const
-HashedSrc	= $ => AC( C( $ ) ).setAttribute( 'src', Hash() )
+const	E			= $ => document.getElementById( $ )
+const	C			= $ => document.createElement( $ )
+const	AC			= $ => E( 'MAIN' ).appendChild( $ )
+const	Clone		= $ => AC( E( $ ).content.cloneNode( true ) )
+const	HashedSrc	= $ => AC( C( $ ) ).setAttribute( 'src', Hash() )
 
-const
-Route = () => {
-
-console.log( location.pathname, location.search, Hash() )
-
+const	Route		= () => {
 	E( 'MAIN' ).innerHTML = ''
-
 	switch ( location.pathname ) {
-	case '/'		: Clone		( 'T_HOME'				); break
-	case '/image'	: HashedSrc	( 'img'					); break
-	case '/iframe'	: HashedSrc	( 'iframe'				); break
-	case '/wc'		: 
-		{	const $ = new JPTable()
-			$.setAttribute( 'json', Hash() )
-			AC( $ )
-		}
-		break
-	default			: Clone		( 'T_404'				); break
+	case '/'		: Clone		( 'T_HOME'								); break
+	case '/image'	: HashedSrc	( 'img'									); break
+	case '/iframe'	: HashedSrc	( 'iframe'								); break
+	case '/wc'		: AC		( new JPTable( JSON.parse( Hash() ) )	); break
+	default			: Clone		( 'T_404'								); break
 	}
 }
-
 window.addEventListener( 'popstate', Route )
-
 Route()
 
-const
-Navigate = $ => (
-	history.pushState( { $ }, null, $ )
+const	Navigate	= $ => (
+	history.pushState( null, null, $ )
 ,	Route()
 )
 E( 'HOME_B'		).onclick = () => Navigate( '/' )
@@ -74,5 +53,6 @@ E( 'IFRAME_B'	).onclick = () => Navigate( '/iframe#/sub.html?A=B'	)
 E( 'WC_B'		).onclick = () => Navigate( '/wc#{"head":["date","name","grade","winner"],"body":[[20181125,"Japan Cup","G1","Almond Eye"],[20181125,"Keihan Hai","G3","Danon Smash"],[20190120,"Tokai S.","G2","Inti"],[20190120,"American Jockey Club Cup","G2","Sciacchetra"]]}'	)
 
 </script>
+
 </body>
 </html>

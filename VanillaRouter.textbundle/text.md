@@ -1,30 +1,39 @@
 # Vanilla Router の勧め
 
-Vanilla Router は [Vanilla JS](http://vanilla-js.com/)、すなわち JavaScript 直でルーターを書く手法を言います。フレームワークに付いているルーターを使用せずにこれを用いることの利点は文末に述べます。
+Vanilla Router は [Vanilla JS](http://vanilla-js.com/)、すなわち素の JavaScript でルーターを書く手法のことを言います。フレームワークに付いているルーターを使用した場合、
+そのフレームワークで作成したコンポーネントしかルーティングすることができませんが、Vanilla Router ならあらゆる HTML 要素をルーティングできます。
 
-まずはルーターとは何かを説明しなくてはならないのですが、その前に SPA について理解することが必要です。
+Vanilla Router を理解する前に、まずは SPA について理解することが必要なので説明します。
 
 ## SPA とは
 
-Web の画面遷移において、ユーザーが別のセクションに移動するときにページ全体をリロードするこれまでの手法を Multi Page Application (MPA) と呼びます。
-これに対し Single Page Application (SPA)は、ユーザーがアプリケーションとやり取りをするたびにそのコンテンツを JavaScript により動的に更新するウェブ開発手法です。
+Single Page Application (SPA)は、ユーザーがアプリケーションとやり取りをするたびにページ中の必要な部分だけを JavaScript により動的に更新するウェブ開発手法です。
+これに対しユーザーがアプリケーションとやり取りをするたびにページ全体をリロードするこれまでの手法を Multi Page Application (MPA) と呼びます。
 
 ## SPAのサンプル
 例えば次の画面のようないくつかのページがあるサービスを考えてみます。
 
-![SS1](assets/SS1.png)![SS2](assets/SS2.png)
+* ホームページ
+![SS1](assets/SS1.png)
+
+* Image ボタンが押された時のページ
+![SS2](assets/SS2.png)
+
+* IFrame ボタンが押された時のページ
 ![SS3](assets/SS3.png)
+* WebComponents ボタンが押された時のページ
 ![SS4](assets/SS4.png)
 
 最初の画像はホームページで URL は https://vanillarouterdemo.web.app となっています。/index.html は存在しています。
 次の画像の URL は https://vanillarouterdemo.web.app/img#https... となっていますが実際には /img/index.html は存在していません。
-このサービスの例では Image ボタンを押した時 JavaScript がコンテンツ部分だけを書き換えます。そして [Histroy API](https://developer.mozilla.org/ja/docs/Web/API/History)を使って https://vanillarouterdemo.web.app/img に遷移したように履歴を登録します。このような機能をルーティングと呼びます。
+このサービスの例では Image ボタンを押した時 JavaScript がコンテンツ部分だけを書き換えます。そして [Histroy API](https://developer.mozilla.org/ja/docs/Web/API/History)を使って https://vanillarouterdemo.web.app/img に遷移したように履歴を登録します。これによってブラウザの履歴やバック、フォワードボタンが使えるようになります。このような機能をルーティングと呼びます。
 
 
 ## SPA の特徴
 
 * **単一HTML**
 SPA は、アプリケーション全体の基盤となる単一の HTML ページで構成されています。これにより、複数のページをリロードする必要がなくなり、ユーザーエクスペリエンスが向上し、体感遅延が減少します。
+
 * **動的なアップデート**
 SPA は、ページ全てをリロードすることなく、Web 側の JavaScript により必要な部分のみを動的にアップデートします。これによりページを遷移することのないシームレスな UX を提供できるようになります。
 
@@ -153,7 +162,7 @@ E( 'WC_B'		).onclick = () => Navigate( '/wc#{"head":["date","name","grade","winn
 
 ## Vailla Router の利点
 
-Vue, React などのフレームワークを使っていると vue router, react router などのルーターライブラリを使うことが多いかと思います。しかしルーターをコンポーネント化せずに [Vanilla JS](http://vanilla-js.com/)で直書きすると、フレームワークベースのコンポーネントだけでなく、全てのHTML要素を自由にルーティングすることができるようになります。上のソースで示したように Vanilla Router のコード量はほんの僅かです。
+Vue, React などのフレームワークを使っていると vue router, react router などのルーターライブラリを使うことが多いかと思います。しかしルーターをコンポーネント化せずに JavaScript で直書きすると、フレームワークベースのコンポーネントだけでなく、全てのHTML要素を自由にルーティングすることができるようになります。上のソースで示したように Vanilla Router のコード量はほんの僅かです。
 
 * 画像、動画のようなリソース
 * iframe を使って他のページリソース
