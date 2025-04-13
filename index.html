@@ -5,8 +5,6 @@
 <style>
 * {
 ;	margin					: 0
-;	font-family: "Consolas", "Courier New", "Lucida Console", Monaco, monospace
-
 ;	transition				: all 0.3s ease
 }
 
@@ -65,92 +63,88 @@ li {
 	<li><a href=https://apps.apple.com/jp/app/slip/id1097457043?mt=12>SliP, Free on AppStore</a></li><br>
 	</ul>
 	<br>
-	<div style="background:#fff;width:120px;height:215px;box-sizing:border-box;border:1px solid #ccc;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;"><div style="line-height:0;"><img src="https://static.jp.mercari.com/assets/img/common/jp/logo_horizontal.png" width="105"></div><a href="https://jp.mercari.com/item/m16982693264?afid=4374042662" style="width:100px;height:100px;background:#eee;"}" target="_self"><img src="https://ambassador-system.mercari.com/v1/i?id=m16982693264&svc=m" style="line-height:0;width:100px;height:100px;object-fit:contain;"/></a><div style="padding:12px 0;width:100%;text-align:center;"><a href="https://jp.mercari.com/item/m16982693264?afid=4374042662" style="width:100px;height:32px;background-color:#E32B36;border-radius:4px;line-height:14px;text-align:center;color:#fff;font-weight:bold;border:0;font-size:12px;display:inline-flex;justify-content:center;align-items:center;" target="_self">今すぐ購入</a></div></div>
 </nav>
 
-<iframe id=CONTENT style="border: none; width: 100%; height: 100%"></iframe>
+<iframe id=CONTENT src=Welcome.html style="border: none; width: 100%; height: 100%"></iframe>
 <aside></aside>
 
 <script type=module>
 
 const
 contents = [
-	[	'Creating a membership service with firebase'
-	,	'Firebase'
+	[	'Introduction to VanillaJS in the Age of WebComponents'
+	,	'2025/04/12'
+	,	[	'VanillaJS'
+		,	'WebComponents'
+		,	'CustomElements'
+		,	'JavaScript'
+		,	'HTML'
+		,	'CSS'
+		]
+	,	() => CONTENT.src = 'https://satachito.github.io/Articles/VanillaComponents.html'
+	]
+,	[	'Creating a membership service with firebase'
 	,	'2024/04/07'
 	,	[	'Firebase'
 		,	'JavaScript'
 		,	'HTML'
 		,	'css'
 		]
+	,	() => CONTENT.src = 'Contents/Firebase.html'
 	]
 ,	[	'Understanding Custom Elements and Web Components'
-	,	'CEvsWC'
 	,	'2024/03/09'
 	,	[	'CustomElements'
 		,	'JavaScript'
 		,	'HTML'
 		,	'WebComponents'
 		]
+	,	() => CONTENT.src = 'Contents/CEvsWC.html'
 	]
 ,	[	'Unleashing the Power of CustomElements in Web Development'
-	,	'CustomElements'
 	,	'2024/01/01'
 	,	[	'CustomElements'
 		,	'JavaScript'
 		,	'HTML'
 		,	'WebComponents'
 		]
+	,	() => CONTENT.src = 'Contents/CustomElements.html'
 	]
 ,	[	'Discover the power of Tensor Cores'
-	,	'TensorCores'
 	,	'2022/06/16'
 	,	[	'Tensor'
 		,	'Matrix'
 		,	'CUDA'
 		,	'C++'
 		]
+	,	() => CONTENT.src = 'Contents/TensorCores.html'
 	]
 ,	[	'Fitting a cubic Bezier curve'
-	,	'CurveFit'
 	,	'2021/01/05'
 	,	[	'Graphics'
 		,	'Bezier'
 		,	'Curve'
 		,	'JavaScript'
 		]
+	,	() => CONTENT.src = 'Contents/CurveFit.html'
 	]
 ,	[	'Create Firebase Project'
-	,	'CreateFirebaseProject'
 	,	'2024/4/3'
 	,	[	'Firebase'
 		,	'Project'
 		,	'JavaScript'
 		]
-	]
-,	[	'About Satoru Ogura'
-	,	'Resume'
-	,	'2023/11/22'
-	,	[	'Graphics'
-		,	'Bezier'
-		,	'Curve'
-		,	'JavaScript'
-		]
+	,	() => CONTENT.src = 'Contents/CreateFirebaseProject.html'
 	]
 ]
 contents.forEach(
 	$ => {
 		const li = ARTICLES.appendChild( document.createElement( 'li' ) )
-		li.textContent = $[ 0 ] + '(' + $[ 2 ] + ')'
+		li.textContent = $[ 0 ] + '(' + $[ 1 ] + ')'
 		li.classList.add( 'article' )
-		li.onclick = () => location.href = location.origin + location.pathname + '?_=' + $[ 1 ]
+		li.onclick = $[ 3 ]
 	}
 )
-
-//	console.log( JSON.stringify( location, null, '\t' ) )
-{	const _ = contents.find( $ => location.search === '?_=' + $[ 1 ] )
-	CONTENT.setAttribute( 'src', _ ? 'Contents/' + _[ 1 ] + '.html' : 'Welcome.html' )
-}
 
 </script>
 
