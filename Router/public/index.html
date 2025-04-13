@@ -4,19 +4,19 @@
 
 <title>Vanilla Router</title>
 
-<template id=T_HOME	><h1>HOME PAGE		</h1></template>
-<template id=T_404	><h1>Page Not found	</h1></template>
+<template id=TEMPLATE>TEMPLATE SAMPLE</template>
 
 </head>
 
 <body>
 
-<button	id=HOME_B	>Home			</button>
-<button	id=IMAGE_B	>Image			</button>
-<button	id=IFRAME_B	>IFrame			</button>
-<button	id=WC_B		>WebComponents	</button>
+<button	id=HOME_B		>Home		</button>
+<button	id=TEMPLATE_B	>Template	</button>
+<button	id=IMAGE_B		>Image		</button>
+<button	id=IFRAME_B		>IFrame		</button>
+<button	id=CUSTOM_B		>Custom		</button>
 
-<main id=MAIN></main>
+<main></main>
 
 <script type=module>
 
@@ -26,18 +26,22 @@ const	Hash		= () => decodeURIComponent( location.hash.slice( 1 ) )
 
 const	E			= $ => document.getElementById( $ )
 const	C			= $ => document.createElement( $ )
-const	AC			= $ => E( 'MAIN' ).appendChild( $ )
-const	Clone		= $ => AC( E( $ ).content.cloneNode( true ) )
-const	HashedSrc	= $ => AC( C( $ ) ).setAttribute( 'src', Hash() )
+
+const
+MAIN = document.querySelector( 'main' )
+
+const	Replace		= $ => ( MAIN.innerHTML = '', MAIN.appendChild( $ ) )
+const	Clone		= $ => Replace( E( $ ).content.cloneNode( true ) )
+const	HashedSrc	= $ => Replace( C( $ ) ).setAttribute( 'src', Hash() )
 
 const	Route		= () => {
-	E( 'MAIN' ).innerHTML = ''
 	switch ( location.pathname ) {
-	case '/'		: Clone		( 'T_HOME'								); break
-	case '/image'	: HashedSrc	( 'img'									); break
-	case '/iframe'	: HashedSrc	( 'iframe'								); break
-	case '/wc'		: AC		( new JPTable( JSON.parse( Hash() ) )	); break
-	default			: Clone		( 'T_404'								); break
+	case '/'			: MAIN.innerHTML = '<h1>HOME PAGE</h1>'			; break
+	case '/template'	: Clone		( 'TEMPLATE'			)			; break
+	case '/image'		: HashedSrc	( 'img'					)			; break
+	case '/iframe'		: HashedSrc	( 'iframe'				)			; break
+	case '/custom'		: Replace	( new JPTable( Hash() )	)			; break
+	default				: MAIN.innerHTML = '</h1>PAGE NOT FOUND</h1>'	; break
 	}
 }
 window.addEventListener( 'popstate', Route )
@@ -48,9 +52,10 @@ const	Navigate	= $ => (
 ,	Route()
 )
 E( 'HOME_B'		).onclick = () => Navigate( '/' )
+E( 'TEMPLATE_B'	).onclick = () => Navigate( '/template' )
 E( 'IMAGE_B'	).onclick = () => Navigate( '/image#https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Jordens_inre.jpg/230px-Jordens_inre.jpg' )
 E( 'IFRAME_B'	).onclick = () => Navigate( '/iframe#/sub.html?A=B'	)
-E( 'WC_B'		).onclick = () => Navigate( '/wc#{"head":["date","name","grade","winner"],"body":[[20181125,"Japan Cup","G1","Almond Eye"],[20181125,"Keihan Hai","G3","Danon Smash"],[20190120,"Tokai S.","G2","Inti"],[20190120,"American Jockey Club Cup","G2","Sciacchetra"]]}'	)
+E( 'CUSTOM_B'	).onclick = () => Navigate( '/custom#{"head":["date","name","grade","winner"],"body":[[20181125,"Japan Cup","G1","Almond Eye"],[20181125,"Keihan Hai","G3","Danon Smash"],[20190120,"Tokai S.","G2","Inti"],[20190120,"American Jockey Club Cup","G2","Sciacchetra"]]}'	)
 
 </script>
 

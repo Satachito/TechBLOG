@@ -1,14 +1,15 @@
-# Vanilla Router の勧め
 
-Vanilla Router は [Vanilla JS](http://vanilla-js.com/)、すなわち素の JavaScript でルーターを書く手法のことを言います。フレームワークに付いているルーターを使用した場合、
-そのフレームワークで作成したコンポーネントしかルーティングすることができませんが、Vanilla Router ならあらゆる HTML 要素をルーティングできます。
-
-Vanilla Router を理解する前に、まずは SPA について理解することが必要なので説明します。
-
-## SPA とは
+## SPAとルーター
 
 Single Page Application (SPA)は、ユーザーがアプリケーションとやり取りをするたびにページ中の必要な部分だけを JavaScript により動的に更新するウェブ開発手法です。
 これに対しユーザーがアプリケーションとやり取りをするたびにページ全体をリロードするこれまでの手法を Multi Page Application (MPA) と呼びます。
+SPA のページ中の必要な部分だけを JavaScript により動的に更新する機能をルーターと呼びます。
+MPA では、ページ遷移ごとにサーバー側でページを生成しそれをクライアントに送る通信が生じますが、SPA ではルーターを用いることで、サーバーとの通信を最小限に抑えつつ、シームレスな画面遷移を実現することができます。
+
+
+## Vanilla Router とは
+
+Vanilla Router は [Vanilla JS](http://vanilla-js.com/)、すなわち素の JavaScript でルーターを書く手法のことを言います。近年の Web 開発では、React や Vue などのフレームワークを用いることが多く、その場合ほぼルーターについているコンポーネント化されたルーターを使用します。コンポーネント化されたルーターは基本的にそのフレームワークで作成したコンポーネントしかルーティングすることができませんが、Vanilla Router ならあらゆる HTML 要素をルーティングできます。
 
 ## SPAのサンプル
 例えば次の画面のようないくつかのページがあるサービスを考えてみます。
@@ -16,17 +17,21 @@ Single Page Application (SPA)は、ユーザーがアプリケーションとや
 * ホームページ
 ![SS1](assets/SS1.png)
 
-* Image ボタンが押された時のページ
+* template ボタンが押された時のページ
 ![SS2](assets/SS2.png)
 
-* IFrame ボタンが押された時のページ
+* Image ボタンが押された時のページ
 ![SS3](assets/SS3.png)
-* WebComponents ボタンが押された時のページ
+
+* IFrame ボタンが押された時のページ
 ![SS4](assets/SS4.png)
 
+* Custom ボタンが押された時のページ
+![SS5](assets/SS5.png)
+
 最初の画像はホームページで URL は https://vanillarouterdemo.web.app となっています。/index.html は存在しています。
-次の画像の URL は https://vanillarouterdemo.web.app/img#https... となっていますが実際には /img/index.html は存在していません。
-このサービスの例では Image ボタンを押した時 JavaScript がコンテンツ部分だけを書き換えます。そして [Histroy API](https://developer.mozilla.org/ja/docs/Web/API/History)を使って https://vanillarouterdemo.web.app/img に遷移したように履歴を登録します。これによってブラウザの履歴やバック、フォワードボタンが使えるようになります。このような機能をルーティングと呼びます。
+例えば Image ボタンを押したときの URL は https://vanillarouterdemo.web.app/img#https... となりますが実際には /img/index.html は存在していません。実際に表示されているファイルは /index.html です。
+このサービスにおいてメニューに並んでいるボタンのどれかを押した時 JavaScript がメニュー以外のコンテンツ部分だけを書き換えます。そして [Histroy API](https://developer.mozilla.org/ja/docs/Web/API/History)を使って https://vanillarouterdemo.web.app/img に遷移したように履歴を登録します。これによってブラウザの履歴やバック、フォワードボタンが使えるようになります。このような機能をルーティングと呼びます。
 
 
 ## SPA の特徴
@@ -51,7 +56,7 @@ SPA は、クライアントとサーバー間のデータ転送量を削減す�
 * **保守性の向上**
 SPA は、アプリケーション全体のコードが単一ページ構造に収まっているため、保守や更新が容易になります。これにより、開発やデプロイメントのプロセスが効率化されます。
 
-## サーバーの設定
+## SPAのためのサーバーの設定
 
 ルーティングは全ての URL を単一の HTML で処理するための SPA の中核技術です。
 
@@ -73,7 +78,7 @@ SPA は、アプリケーション全体のコードが単一ページ構造に�
     }
 
 
-## ルーターの実装
+## Vanilla Router の実装例
 
 ルーティングを行うプログラムをルーターといいます。以下のアドレスに単純な実装をおいておきます。実際の動作はこちらで確認してみてください。
 
@@ -86,85 +91,123 @@ https://vanillarouterdemo.web.app/
 <html lang=en>
 <head>
 
-<title>Router</title>
+<title>Vanilla Router</title>
 
-<template id=T_HOME	><h1>HOME PAGE		</h1></template>
-<template id=T_404	><h1>Page Not found	</h1></template>
+<template id=TEMPLATE>TEMPLATE SAMPLE</template>
 
 </head>
 
 <body>
 
-<button	id=HOME_B	>Home			</button>
-<button	id=IMAGE_B	>Image			</button>
-<button	id=IFRAME_B	>IFrame			</button>
-<button	id=WC_B		>WebComponents	</button>
+<button	id=HOME_B		>Home		</button>
+<button	id=TEMPLATE_B	>Template	</button>
+<button	id=IMAGE_B		>Image		</button>
+<button	id=IFRAME_B		>IFrame		</button>
+<button	id=CUSTOM_B		>Custom		</button>
 
-<main id=MAIN></main>
+<main></main>
 
 <script type=module>
 
 import	JPTable from './jp-table.js'
 
-const
-Hash		= () => decodeURIComponent( location.hash.slice( 1 ) )
+const	Hash		= () => decodeURIComponent( location.hash.slice( 1 ) )
+
+const	E			= $ => document.getElementById( $ )
+const	C			= $ => document.createElement( $ )
 
 const
-C			= $ => document.createElement( $ )
-const
-E			= $ => document.getElementById( $ )
-const
-AC			= $ => E( 'MAIN' ).appendChild( $ )
-const
-Clone		= $ => AC( E( $ ).content.cloneNode( true ) )
-const
-HashedSrc	= $ => AC( C( $ ) ).setAttribute( 'src', Hash() )
+MAIN = document.querySelector( 'main' )
 
-const
-Route = () => {
+const	Replace		= $ => ( MAIN.innerHTML = '', MAIN.appendChild( $ ) )
+const	Clone		= $ => Replace( E( $ ).content.cloneNode( true ) )
+const	HashedSrc	= $ => Replace( C( $ ) ).setAttribute( 'src', Hash() )
 
-console.log( location.pathname, location.search, Hash() )
-
-	E( 'MAIN' ).innerHTML = ''
-
+const	Route		= () => {
 	switch ( location.pathname ) {
-	case '/'		: Clone		( 'T_HOME'				); break
-	case '/image'	: HashedSrc	( 'img'					); break
-	case '/iframe'	: HashedSrc	( 'iframe'				); break
-	case '/wc'		: 
-		{	const $ = new JPTable()
-			$.setAttribute( 'json', Hash() )
-			AC( $ )
-		}
-		break
-	default			: Clone		( 'T_404'				); break
+	case '/'			: MAIN.innerHTML = '<h1>HOME PAGE</h1>'			; break
+	case '/template'	: Clone		( 'TEMPLATE'			)			; break
+	case '/image'		: HashedSrc	( 'img'					)			; break
+	case '/iframe'		: HashedSrc	( 'iframe'				)			; break
+	case '/custom'		: Replace	( new JPTable( Hash() )	)			; break
+	default				: MAIN.innerHTML = '</h1>PAGE NOT FOUND</h1>'	; break
 	}
 }
-
 window.addEventListener( 'popstate', Route )
-
 Route()
 
-const
-Navigate = $ => (
-	history.pushState( { $ }, null, $ )
+const	Navigate	= $ => (
+	history.pushState( null, null, $ )
 ,	Route()
 )
 E( 'HOME_B'		).onclick = () => Navigate( '/' )
+E( 'TEMPLATE_B'	).onclick = () => Navigate( '/template' )
 E( 'IMAGE_B'	).onclick = () => Navigate( '/image#https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Jordens_inre.jpg/230px-Jordens_inre.jpg' )
 E( 'IFRAME_B'	).onclick = () => Navigate( '/iframe#/sub.html?A=B'	)
-E( 'WC_B'		).onclick = () => Navigate( '/wc#{"head":["date","name","grade","winner"],"body":[[20181125,"Japan Cup","G1","Almond Eye"],[20181125,"Keihan Hai","G3","Danon Smash"],[20190120,"Tokai S.","G2","Inti"],[20190120,"American Jockey Club Cup","G2","Sciacchetra"]]}'	)
+E( 'CUSTOM_B'	).onclick = () => Navigate( '/custom#{"head":["date","name","grade","winner"],"body":[[20181125,"Japan Cup","G1","Almond Eye"],[20181125,"Keihan Hai","G3","Danon Smash"],[20190120,"Tokai S.","G2","Inti"],[20190120,"American Jockey Club Cup","G2","Sciacchetra"]]}'	)
 
 </script>
+
 </body>
 </html>
 ```
 
-## Vailla Router の利点
+上記ソース中の`Route`という関数で`location.pathname`に基づいてコンテンツ部分-mainタグの中身-を書き換えています。
 
-Vue, React などのフレームワークを使っていると vue router, react router などのルーターライブラリを使うことが多いかと思います。しかしルーターをコンポーネント化せずに JavaScript で直書きすると、フレームワークベースのコンポーネントだけでなく、全てのHTML要素を自由にルーティングすることができるようになります。上のソースで示したように Vanilla Router のコード量はほんの僅かです。
+* `'/'`  の場合
+`main`タグの`innerHTML`を`<h1>HOME PAGE</h1>`にしています
+
+* `'template'`  の場合
+`id=TEMPLATE`の`template`を実体化して、`main`タグの子要素にしています。
+
+* `'image'`  の場合
+`img`タグを作って`src`属性に`URL`の`hash`部分をセットして、`main`タグの子要素にしています。
+
+* `'irame'`  の場合
+`irame`タグを作って`src`属性に`URL`の`hash`部分(`/sub.html?A=B`)をセットして、`main`タグの子要素にしています。`sub.html`の中身は以下のようになっています。
+```html
+<h1></h1>
+<script type=module>
+document.querySelector( 'h1' ).textContent = location.search
+</script>
+```
+
+
+* `'custom'`  の場合
+別ファイル`(./jp-table.js)`中に記述されているカスタムエレメントを実体化して、`main`タグの子要素にしています。`jp-table.js`の中の`JPTable`は例として作った、`table`要素を引数の`json`から実体化するカスタムエレメントです。`./jp-table`の中身は以下のようになっています。
+```javascript
+export default class
+JPTable extends HTMLElement {
+
+	constructor( json ) {
+		super()
+		this.innerHTML = '<table><thead></thead><tbody></tbody></table>'
+
+		const data = JSON.parse( json )
+		const Row = ( r, t_h_d ) => '<tr>' + r.map( h_d => `<t${t_h_d}>${h_d}</t${t_h_d}>` ).join( '' ) + '</tr>'
+
+		const table	= this.children[ 0 ]
+		table.children[ 0 ].innerHTML = Row( data.head, 'h' )
+		table.children[ 1 ].innerHTML = data.body.map( r => Row( r, 'd' ) ).join( '' )
+	}
+}
+
+customElements.define( 'jp-table', JPTable )
+```
+
+
+## Vanilla Router のすゝめ
+
+上のソースで示したように Vanilla Router のコード量はほんの僅かです。それにも関わらず以下のような全ての HTML 要素を自由にルーティングする自由度を持ちえます。
 
 * 画像、動画のようなリソース
 * iframe を使って他のページリソース
+* HTMLの直書き
 * template
-* WebComponents
+* CustomElements/WebComponents
+
+これが Vanilla Router をお勧めする利用です。様々な外部リソースを統合するようなSPAを作る際は、是非 Vanilla Router を検討してみてください。
+
+最後までお読みくださいましてありがとうございました。
+
+
