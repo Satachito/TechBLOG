@@ -1,158 +1,402 @@
-<!DOCTYPE html>
-<html lang=en>
-<title>SliP Tech BLOG</title>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="合同会社SliPは、コンピューターグラフィックスとハイパフォーマンスコンピューティングの技術で、アイデアを動くプロダクトへ変えます。">
+  <meta name="theme-color" content="#090b10">
+  <title>SliP LLC — Ideas, engineered.</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
 
-<style>
-* {
-;	margin					: 0
-;	transition				: all 0.3s ease
-}
+    :root {
+      --bg: #090b10;
+      --surface: #11141c;
+      --surface-2: #171b25;
+      --text: #f5f7fb;
+      --muted: #9ca4b5;
+      --line: rgba(255, 255, 255, .1);
+      --accent: #a6ff4d;
+      --accent-2: #65d8ff;
+      --max: 1180px;
+    }
 
-html {
-;	height					: 100%
-}
-body {
-;	height					: 100%
-;	margin					: 0
-;	display					: grid
-;	grid-template-rows		: auto 1fr auto
-;	grid-template-columns	: 256px 1fr auto
-}
-header, footer {
-;	grid-column				: 1 / 4
-;	padding					: 2px 5px
-}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 78% 3%, rgba(101, 216, 255, .1), transparent 28rem),
+        radial-gradient(circle at 8% 30%, rgba(166, 255, 77, .07), transparent 25rem),
+        var(--bg);
+      font-family: "DM Sans", "Noto Sans JP", sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-header	{	padding			: 12px }
-nav		{	padding			: 12px }
-footer	{	padding			: 12px }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .wrap { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
 
-header	{	border-bottom	: 1px solid black }
-footer	{	border-top		: 1px solid black }
-nav		{	border-right	: 1px solid black }
-aside	{	border-left		: 1px solid black }
+    .site-header {
+      position: sticky;
+      z-index: 10;
+      top: 0;
+      border-bottom: 1px solid var(--line);
+      background: rgba(9, 11, 16, .78);
+      backdrop-filter: blur(18px);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+    }
+    .logo { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.03em; }
+    .logo-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: #090b10;
+      background: var(--accent);
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .nav { display: flex; align-items: center; gap: 30px; color: #c5cad5; font-size: 14px; }
+    .nav a:hover { color: var(--text); }
+    .nav .nav-cta {
+      padding: 9px 16px;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+    }
+    .menu-button { display: none; color: var(--text); background: none; border: 0; font-size: 26px; }
 
-li {
-;	color					: blue
-;	text-decoration			: underline
-;	cursor					: pointer
-;	margin-bottom			: 16px
-}
+    .hero { padding: 126px 0 112px; overflow: hidden; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 25px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+    .hero h1 {
+      max-width: 940px;
+      margin: 0;
+      font-size: clamp(54px, 9vw, 112px);
+      line-height: .94;
+      letter-spacing: -.075em;
+    }
+    .hero h1 span {
+      color: transparent;
+      background: linear-gradient(100deg, var(--accent), var(--accent-2));
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 70px;
+      margin-top: 58px;
+    }
+    .hero-copy { max-width: 590px; margin: 0; color: var(--muted); font-size: clamp(17px, 2vw, 21px); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 22px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform .2s, border-color .2s, background .2s;
+    }
+    .button:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.3); }
+    .button.primary { color: #0b0d11; background: var(--accent); border-color: var(--accent); }
+    .button.primary:hover { background: #b7ff70; }
 
-</style>
+    .marquee {
+      overflow: hidden;
+      padding: 19px 0;
+      color: #737b8d;
+      border-block: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+    .marquee span { display: flex; align-items: center; gap: 25px; padding-right: 25px; }
+    .marquee span::after { content: "✦"; color: var(--accent); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
 
-<header>
-	<span style="font-size: 48px; font-weight: bold">SliP LLC, Tokyo.</span>
-</header>
+    section { padding: 120px 0; }
+    .section-head {
+      display: grid;
+      grid-template-columns: .7fr 1.3fr;
+      gap: 60px;
+      margin-bottom: 54px;
+    }
+    .kicker { margin: 8px 0 0; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+    .section-head h2 { margin: 0; font-size: clamp(36px, 5vw, 64px); line-height: 1.06; letter-spacing: -.055em; }
 
-<nav>
-	<h1>Tech BLOG</h1>
-	<br>
-	<ul id=ARTICLES style="list-style-type: square; padding-left: 12px"></ul>
-	<br>
-	<h1>Services</h1>
-	<br>
-	<ul style="list-style-type: square; padding-left: 12px">
-	<li><a href=https://slip.828.tokyo>SliP, the monster calculator</a></li>
-	<li><a href=https://vecedit-b5a34.web.app/>VecEdit: the SVG Editor(WIP)</a></li>
-	</ul>
-	<br>
-	<h1>Applications</h1>
-	<br>
-	<ul style="list-style-type: square; padding-left: 12px">
-	<li><a href=https://apps.apple.com/jp/app/slip/id1097457043?mt=12>SliP, Free on AppStore</a></li><br>
-	</ul>
-	<br>
-</nav>
+    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 26px; overflow: hidden; }
+    .service-card { min-height: 350px; padding: 34px; background: rgba(17, 20, 28, .58); border-right: 1px solid var(--line); }
+    .service-card:last-child { border: 0; }
+    .number { color: #687083; font-size: 12px; }
+    .service-icon { display: grid; place-items: center; width: 52px; height: 52px; margin: 62px 0 25px; color: var(--accent); background: rgba(166,255,77,.08); border: 1px solid rgba(166,255,77,.18); border-radius: 15px; font-size: 22px; }
+    .service-card h3 { margin: 0 0 12px; font-size: 22px; letter-spacing: -.03em; }
+    .service-card p { margin: 0; color: var(--muted); font-size: 14px; }
 
-<iframe id=CONTENT src=Welcome.html style="border: none; width: 100%; height: 100%"></iframe>
-<aside></aside>
+    .projects { background: rgba(255,255,255,.018); border-block: 1px solid var(--line); }
+    .project-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; }
+    .project-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+      padding: 38px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      transition: transform .25s, border-color .25s;
+    }
+    .project-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.22); }
+    .project-card::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -120px;
+      width: 330px;
+      height: 330px;
+      background: radial-gradient(circle, rgba(166,255,77,.16), transparent 65%);
+    }
+    .project-card.secondary::after { background: radial-gradient(circle, rgba(101,216,255,.15), transparent 65%); }
+    .label { width: max-content; padding: 6px 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; font-size: 11px; text-transform: uppercase; }
+    .project-card h3 { margin: auto 0 7px; font-size: clamp(34px, 4vw, 56px); letter-spacing: -.06em; }
+    .project-card p { z-index: 1; max-width: 480px; margin: 0; color: var(--muted); }
+    .arrow { position: absolute; top: 30px; right: 34px; font-size: 28px; }
 
-<script type=module>
+    .article-list { border-top: 1px solid var(--line); }
+    .article {
+      display: grid;
+      grid-template-columns: 125px 1fr auto;
+      gap: 22px;
+      align-items: center;
+      padding: 28px 10px;
+      border-bottom: 1px solid var(--line);
+      transition: padding .2s, color .2s;
+    }
+    .article:hover { padding-inline: 18px; color: var(--accent); }
+    .article time { color: #767e90; font-size: 12px; }
+    .article h3 { margin: 0; font-size: clamp(17px, 2.2vw, 23px); font-weight: 500; letter-spacing: -.025em; }
+    .tags { color: #747c8e; font-size: 11px; text-transform: uppercase; }
+    .article-more { margin-top: 30px; text-align: right; }
 
-const
-contents = [
-	[	'Building a Minimal WebAssembly Environment with Clang and LLD'
-	,	'2025/09/14'
-	,	[	'WebAssembly'
-		,	'Clang'
-		,	'wasm-ld'
-		]
-	,	() => CONTENT.src = 'https://satachito.github.io/Articles/MinimalWebAssembly.md'
-	]
-	[	'Introduction to VanillaJS in the Age of WebComponents'
-	,	'2025/04/12'
-	,	[	'VanillaJS'
-		,	'WebComponents'
-		,	'CustomElements'
-		,	'JavaScript'
-		,	'HTML'
-		,	'CSS'
-		]
-	,	() => CONTENT.src = 'https://satachito.github.io/Articles/VanillaComponents.html'
-	]
-,	[	'Creating a membership service with firebase'
-	,	'2024/04/07'
-	,	[	'Firebase'
-		,	'JavaScript'
-		,	'HTML'
-		,	'css'
-		]
-	,	() => CONTENT.src = 'Contents/Firebase.html'
-	]
-,	[	'Create Firebase Project'
-	,	'2024/4/3'
-	,	[	'Firebase'
-		,	'Project'
-		,	'JavaScript'
-		]
-	,	() => CONTENT.src = 'Contents/CreateFirebaseProject.html'
-	]
-,	[	'Understanding Custom Elements and Web Components'
-	,	'2024/03/09'
-	,	[	'CustomElements'
-		,	'JavaScript'
-		,	'HTML'
-		,	'WebComponents'
-		]
-	,	() => CONTENT.src = 'Contents/CEvsWC.html'
-	]
-,	[	'Unleashing the Power of CustomElements in Web Development'
-	,	'2024/01/01'
-	,	[	'CustomElements'
-		,	'JavaScript'
-		,	'HTML'
-		,	'WebComponents'
-		]
-	,	() => CONTENT.src = 'Contents/CustomElements.html'
-	]
-,	[	'Discover the power of Tensor Cores'
-	,	'2022/06/16'
-	,	[	'Tensor'
-		,	'Matrix'
-		,	'CUDA'
-		,	'C++'
-		]
-	,	() => CONTENT.src = 'Contents/TensorCores.html'
-	]
-,	[	'Fitting a cubic Bezier curve'
-	,	'2021/01/05'
-	,	[	'Graphics'
-		,	'Bezier'
-		,	'Curve'
-		,	'JavaScript'
-		]
-	,	() => CONTENT.src = 'Contents/CurveFit.html'
-	]
-]
-contents.forEach(
-	$ => {
-		const li = ARTICLES.appendChild( document.createElement( 'li' ) )
-		li.textContent = $[ 0 ] + '(' + $[ 1 ] + ')'
-		li.classList.add( 'article' )
-		li.onclick = $[ 3 ]
-	}
-)
+    .support-box {
+      position: relative;
+      padding: clamp(36px, 7vw, 84px);
+      overflow: hidden;
+      background: linear-gradient(125deg, #1b2912, #111a17 48%, #10151e);
+      border: 1px solid rgba(166,255,77,.22);
+      border-radius: 32px;
+    }
+    .support-box::before { content: "♡"; position: absolute; right: 7%; top: -45px; color: rgba(166,255,77,.07); font-size: 260px; line-height: 1; }
+    .support-box h2 { position: relative; max-width: 720px; margin: 0 0 22px; font-size: clamp(38px, 6vw, 72px); line-height: 1.02; letter-spacing: -.06em; }
+    .support-box p { position: relative; max-width: 600px; margin: 0 0 34px; color: #aeb8ae; }
 
-</script>
+    footer { padding: 45px 0; border-top: 1px solid var(--line); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; color: #747c8e; font-size: 12px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a:hover { color: var(--text); }
 
+    @media (max-width: 760px) {
+      .wrap { width: min(calc(100% - 28px), var(--max)); }
+      .menu-button { display: block; }
+      .nav {
+        position: absolute;
+        inset: 72px 0 auto;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 14px 20px 22px;
+        background: #0d1016;
+        border-bottom: 1px solid var(--line);
+      }
+      .nav.open { display: flex; }
+      .nav a { padding: 13px; }
+      .nav .nav-cta { margin-top: 8px; text-align: center; }
+      .hero { padding: 90px 0 75px; }
+      .hero h1 { font-size: clamp(52px, 17vw, 78px); }
+      .hero-bottom, .section-head { grid-template-columns: 1fr; gap: 28px; }
+      .actions { justify-content: flex-start; }
+      section { padding: 82px 0; }
+      .service-grid, .project-grid { grid-template-columns: 1fr; }
+      .service-card { min-height: 280px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .service-icon { margin-top: 38px; }
+      .project-card { min-height: 340px; }
+      .article { grid-template-columns: 1fr auto; gap: 8px 16px; }
+      .article time { grid-column: 1 / -1; }
+      .tags { display: none; }
+      .footer-inner { align-items: flex-start; flex-direction: column; gap: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .marquee-track { animation: none; }
+      * { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="logo" href="#" aria-label="SliP トップへ"><span class="logo-mark">S</span><span>SliP LLC</span></a>
+      <button class="menu-button" aria-label="メニューを開く" aria-expanded="false">☰</button>
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a href="#expertise">Expertise</a>
+        <a href="#products">Products</a>
+        <a href="#journal">Journal</a>
+        <a class="nav-cta" href="https://github.com/sponsors/Satachito" target="_blank" rel="noopener">GitHub Sponsors ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">SliP LLC · Tokyo, Japan</p>
+        <h1>Ideas,<br><span>engineered.</span></h1>
+        <div class="hero-bottom">
+          <p class="hero-copy">グラフィックスと高速計算の専門性で、まだ名前のないアイデアを、美しく速く動くプロダクトへ。</p>
+          <div class="actions">
+            <a class="button primary" href="#products">プロダクトを見る <span>↓</span></a>
+            <a class="button" href="https://github.com/Satachito" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Computer Graphics</span><span>High Performance Computing</span><span>Web Engineering</span><span>Open Source</span><span>Computer Graphics</span><span>High Performance Computing</span><span>Web Engineering</span><span>Open Source</span>
+      </div>
+    </div>
+
+    <section id="expertise">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">What we do</p>
+          <h2>技術と表現の境界を、軽やかに越える。</h2>
+        </div>
+        <div class="service-grid">
+          <article class="service-card">
+            <span class="number">01</span><div class="service-icon">◇</div>
+            <h3>Computer Graphics</h3>
+            <p>メディアやWebに向けた、精密でダイナミックなビジュアル表現とグラフィックス技術。</p>
+          </article>
+          <article class="service-card">
+            <span class="number">02</span><div class="service-icon">⌁</div>
+            <h3>High Performance</h3>
+            <p>CUDA、Tensor Core、WebAssembly。計算資源を活かし、複雑な処理をより速く。</p>
+          </article>
+          <article class="service-card">
+            <span class="number">03</span><div class="service-icon">↗</div>
+            <h3>Web Engineering</h3>
+            <p>Vanilla JavaScriptからクラウドまで、長く使えるシンプルな設計で体験を実装。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects" id="products">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Products</p>
+          <h2>つくりながら、未来の道具を考える。</h2>
+        </div>
+        <div class="project-grid">
+          <a class="project-card" href="https://slip.828.tokyo" target="_blank" rel="noopener">
+            <span class="label">Calculator / Language</span><span class="arrow">↗</span>
+            <h3>SliP</h3>
+            <p>数式を書いたそばから評価する、モンスター級の計算機。計算機であり、ひとつのコンピューター言語でもあります。</p>
+          </a>
+          <a class="project-card secondary" href="https://vecedit-b5a34.web.app/" target="_blank" rel="noopener">
+            <span class="label">SVG Editor · WIP</span><span class="arrow">↗</span>
+            <h3>VecEdit</h3>
+            <p>SVGの階層構造をそのまま扱える、ベクターグラフィックスエディター。</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="journal">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Tech Journal</p>
+          <h2>試し、理解し、技術をひらく。</h2>
+        </div>
+        <div class="article-list">
+          <a class="article" href="https://satachito.github.io/Articles/MinimalWebAssembly.md" target="_blank" rel="noopener"><time>2025.09.14</time><h3>Building a Minimal WebAssembly Environment with Clang and LLD</h3><span class="tags">WebAssembly · Clang</span></a>
+          <a class="article" href="https://satachito.github.io/Articles/VanillaComponents.html" target="_blank" rel="noopener"><time>2025.04.12</time><h3>Introduction to VanillaJS in the Age of WebComponents</h3><span class="tags">VanillaJS · Components</span></a>
+          <a class="article" href="Contents/Firebase.html"><time>2024.04.07</time><h3>Creating a membership service with Firebase</h3><span class="tags">Firebase · JavaScript</span></a>
+          <a class="article" href="Contents/CEvsWC.html"><time>2024.03.09</time><h3>Understanding Custom Elements and Web Components</h3><span class="tags">Web Components</span></a>
+          <a class="article" href="Contents/TensorCores.html"><time>2022.06.16</time><h3>Discover the power of Tensor Cores</h3><span class="tags">CUDA · Matrix</span></a>
+        </div>
+        <div class="article-more"><a class="button" href="https://github.com/Satachito" target="_blank" rel="noopener">すべての活動をGitHubで見る ↗</a></div>
+      </div>
+    </section>
+
+    <section id="support">
+      <div class="wrap">
+        <div class="support-box">
+          <p class="eyebrow">Support open source</p>
+          <h2>次の実験を、一緒につくりませんか。</h2>
+          <p>GitHub Sponsorsからの支援は、オープンソースの開発、技術検証、知見の公開を継続する力になります。</p>
+          <a class="button primary" href="https://github.com/sponsors/Satachito" target="_blank" rel="noopener">GitHubでスポンサーになる ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© 2026 SliP LLC, Tokyo.</span>
+      <div class="footer-links">
+        <a href="legal.html">特定商取引法に基づく表記</a>
+        <a href="mailto:satoru.ogura@me.com">Contact</a>
+        <a href="https://github.com/Satachito" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const button = document.querySelector('.menu-button');
+    const nav = document.querySelector('.nav');
+    button.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      button.setAttribute('aria-expanded', open);
+      button.textContent = open ? '×' : '☰';
+    });
+    nav.addEventListener('click', () => {
+      nav.classList.remove('open');
+      button.setAttribute('aria-expanded', 'false');
+      button.textContent = '☰';
+    });
+  </script>
+</body>
+</html>
