@@ -53,17 +53,8 @@
       justify-content: space-between;
       min-height: 72px;
     }
-    .logo { display: flex; align-items: center; gap: 11px; font-weight: 700; letter-spacing: -.03em; }
-    .logo-mark {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      color: #090b10;
-      background: var(--accent);
-      border-radius: 10px;
-      font-weight: 700;
-    }
+    .logo { display: flex; align-items: center; }
+    .logo img { display: block; width: 184px; height: auto; }
     .nav { display: flex; align-items: center; gap: 30px; color: #c5cad5; font-size: 14px; }
     .nav a:hover { color: var(--text); }
     .nav .nav-cta {
@@ -265,7 +256,7 @@
 <body>
   <header class="site-header">
     <div class="wrap header-inner">
-      <a class="logo" href="#" aria-label="SliP トップへ"><span class="logo-mark">S</span><span>SliP LLC</span></a>
+      <a class="logo" href="#" aria-label="SliP LLC, Tokyo トップへ"><img src="slip-logo.svg" alt="SliP LLC, Tokyo"></a>
       <button class="menu-button" aria-label="メニューを開く" aria-expanded="false">☰</button>
       <nav class="nav" aria-label="メインナビゲーション">
         <a href="#expertise">Expertise</a>

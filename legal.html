@@ -14,8 +14,8 @@
     .wrap { width: min(calc(100% - 36px), 900px); margin-inline: auto; }
     header { border-bottom: 1px solid var(--line); }
     .header-inner { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
-    .logo { display: flex; align-items:center; gap: 11px; color: var(--text); text-decoration: none; font-weight:700; }
-    .mark { display:grid; place-items:center; width:34px; height:34px; color:#090b10; background:var(--accent); border-radius:10px; }
+    .logo { display: flex; align-items:center; color: var(--text); text-decoration: none; }
+    .logo img { display:block; width:184px; height:auto; }
     .back { color: var(--muted); font-size: 13px; text-decoration: none; }
     main { padding: 90px 0 120px; }
     .eyebrow { margin: 0 0 18px; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
@@ -35,7 +35,7 @@
 <body>
   <header>
     <div class="wrap header-inner">
-      <a class="logo" href="index.html"><span class="mark">S</span>SliP LLC</a>
+      <a class="logo" href="index.html"><img src="slip-logo.svg" alt="SliP LLC, Tokyo"></a>
       <a class="back" href="index.html">← トップへ戻る</a>
     </div>
   </header>

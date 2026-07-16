@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 96" role="img" aria-labelledby="title desc">
+  <title id="title">SliP LLC, Tokyo</title>
+  <desc id="desc">丸括弧に囲まれた高速なSのシンボルとSliP LLC, Tokyoのロゴ</desc>
+  <g fill="none" stroke="#a6ff4d" stroke-linecap="round">
+    <path d="M38 19C21 31 15 63 38 78" stroke-width="8"/>
+    <path d="M127 19c17 12 23 44 0 59" stroke-width="8"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <path d="M8 49h68" stroke="#a6ff4d" stroke-width="8"/>
+    <path d="M19 62h74" stroke="#a6ff4d" stroke-width="8"/>
+    <path d="M4 62h2" stroke="#65d8ff" stroke-width="8"/>
+    <path d="M30 36h54c19 0 23 26 3 26H63" stroke="#a6ff4d" stroke-width="12"/>
+  </g>
+  <g fill="#f5f7fb">
+    <path d="M169 26h65v11h-51c-10 0-10 12 0 12h31c27 0 27 32 0 32h-47V70h44c11 0 11-11 0-11h-31c-26 0-27-33-11-33Z"/>
+    <rect x="245" y="25" width="12" height="56" rx="2"/>
+    <rect x="269" y="43" width="12" height="38" rx="2"/>
+    <rect x="269" y="25" width="12" height="12" rx="2" fill="#a6ff4d"/>
+    <path d="M294 25h39c32 0 32 42 0 42h-27v14h-12V25Zm12 11v20h26c15 0 15-20 0-20h-26Z"/>
+  </g>
+  <text x="294" y="94" fill="#9ca4b5" font-family="Arial, sans-serif" font-size="10" font-weight="600" letter-spacing="3.2">LLC, TOKYO</text>
+</svg>
